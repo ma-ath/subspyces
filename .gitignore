@@ -1,3 +1,4 @@
 env/
 mnist/
 emnist/
+.ipynb_checkpoints/
