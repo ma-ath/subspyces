@@ -19,9 +19,16 @@ class VectorSM:
     def eval(self):
         pass
 
+    def cossine_similarity(vector:torch.Tensor, subspace:VectorSubspace):
+        assert(len(vector) == subspace.vector_size)
+
 # --- unittests
 class TestVectorSM(unittest.TestCase):
     def test_init(self):
+        pass
+
+    def test_cossine_similarity(self):
+        sm = VectorSM()
         pass
         
 
