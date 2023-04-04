@@ -1,3 +1,4 @@
+import math
 import torch
 import unittest
 
@@ -34,6 +35,31 @@ class VectorSubspace:
         U, S, Vh = torch.linalg.svd(self.A, full_matrices=full_matrices)
         return U, S, Vh
 
+    def pca(self, min_energy:float=0.8):
+        # calculate mean vector
+        mean_vector = self.A.mean(dim=0)
+
+        # standardize data matrix
+        A_pca = torch.sub(self.A, mean_vector)
+        A_pca = torch.div(A_pca, math.sqrt(self.vector_size))
+
+        # Calculate SVD
+        U, S, Vh = self.svd(full_matrices=False)
+
+        # Get base vectors for subspace from min_energy
+        # torch.cumsum(S, dim=0) / torch.sum(S)
+        n, energy = 0, 0
+        total_energy = torch.sum(S)
+        while energy/total_energy < min_energy:
+            energy += S[n]
+            n += 1
+        
+        # Generate Subspace
+        subspace = VectorSubspace(vector_size=self.vector_size)
+        subspace.append(Vh[:n])
+
+        return subspace
+
 
 # --- unittests
 class TestVectorSubspace(unittest.TestCase):
@@ -61,6 +87,11 @@ class TestVectorSubspace(unittest.TestCase):
         vector_10 = torch.rand(10, 32)
         subspace.append(vector_10)
         assert(torch.allclose(subspace[20], vector_10[9]))
+    
+    def test_pca(self):
+        subspace = VectorSubspace(10, 32)
+        pca_base = subspace.pca()
+        assert(len(pca_base) <= len(subspace))
 
 
 if __name__ == "__main__":
