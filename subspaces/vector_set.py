@@ -27,7 +27,7 @@ class VectorSet:
             return self.set[label]
         raise(IndexError(f"Label {label} not in VectorSet"))
     
-    def GenerateSubspaces(self, vectors: torch.Tensor, labels:list) -> None:
+    def Populate(self, vectors: torch.Tensor, labels:list) -> None:
         """
         Populates VectorSubspaces with vectors.
         If label does not exists in label list, generate it
@@ -42,7 +42,7 @@ class VectorSet:
             if label not in self.labels:
                 self.labels.append(label)
                 self.set[label] = VectorSubspace(vector_size=self.vector_size)
-            self.set[label].append(vector)  
+            self.set[label].append(vector)
 
 
 # --- unittests
@@ -64,7 +64,7 @@ class TestSubspaces(unittest.TestCase):
         mock_labels = list(range(10))
 
         for _ in range(10):
-            set.GenerateSubspaces(mock_data, mock_labels)
+            set.Populate(mock_data, mock_labels)
         
         assert(len(set.labels) == 10)
         assert(len(set[0]) == 10)
@@ -73,12 +73,12 @@ class TestSubspaces(unittest.TestCase):
         with self.assertRaises(AssertionError):
             mock_data = torch.rand(10, 32)
             mock_labels = list(range(9))
-            set.GenerateSubspaces(mock_data, mock_labels)
+            set.Populate(mock_data, mock_labels)
 
         with self.assertRaises(AssertionError):
             mock_data = torch.rand(10, 24)
             mock_labels = list(range(10))
-            set.GenerateSubspaces(mock_data, mock_labels)
+            set.Populate(mock_data, mock_labels)
         
 
 if __name__ == "__main__":

@@ -63,6 +63,5 @@ class TestVectorSubspace(unittest.TestCase):
         assert(torch.allclose(subspace[20], vector_10[9]))
 
 
-
 if __name__ == "__main__":
     unittest.main()
