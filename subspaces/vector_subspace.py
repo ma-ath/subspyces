@@ -1,11 +1,12 @@
 import torch
 import unittest
 
-class Subspace:
+
+class VectorSubspace:
     """
     Class that defines a simple subspace
     """
-    def __init__(self, n:int=1, vector_size:int=1):
+    def __init__(self, n:int=0, vector_size:int=0):
         """
         n (int): number of vectors in subspace
         vector_size (int): size of vector in subspace
@@ -29,18 +30,18 @@ class Subspace:
         self.n = self.n + vector.shape[0]
         self.A = torch.cat([self.A, vector], dim=0)
     
-    def svd(self):
-        U, S, Vh = torch.linalg.svd(self.A)
+    def svd(self, full_matrices=False):
+        U, S, Vh = torch.linalg.svd(self.A, full_matrices=full_matrices)
         return U, S, Vh
 
 
 # --- unittests
-class TestSubspace(unittest.TestCase):
+class TestVectorSubspace(unittest.TestCase):
     def test_init(self):
-        subspace = Subspace()
+        _ = VectorSubspace()
 
     def test_getitem_len(self):
-        subspace = Subspace(10, 32)
+        subspace = VectorSubspace(10, 32)
         vector = subspace[1]
         self.assertEqual(vector.shape[0], 32)
         self.assertEqual(len(subspace), 10)
@@ -48,11 +49,11 @@ class TestSubspace(unittest.TestCase):
             subspace[11]
     
     def test_svd(self):
-        subspace = Subspace(10,32)
+        subspace = VectorSubspace(10,32)
         U, S, V = subspace.svd()
     
     def test_append(self):
-        subspace = Subspace(10, 32)
+        subspace = VectorSubspace(10, 32)
         vector_1 = torch.rand(32)
         subspace.append(vector_1)
         assert(torch.allclose(subspace[10], vector_1))
