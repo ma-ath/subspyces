@@ -72,6 +72,7 @@ class VectorSM:
             S+=torch.inner(vector, subspace[i])**2 / (torch.inner(vector, vector) * torch.inner(subspace[i], subspace[i]))
         return S
 
+
 # --- unittests
 class TestVectorSM(unittest.TestCase):
     def test_init(self):
@@ -109,7 +110,6 @@ class TestVectorSM(unittest.TestCase):
         mock_vector = torch.rand(10, 32)
         mock_labels = [i for i in list(range(10))]
         eval = sm.eval(mock_vector, mock_labels)
-        print(eval)
 
 
 if __name__ == "__main__":
