@@ -13,14 +13,37 @@ class VectorSM:
         self.vector_size = vector_size
         pass
 
-    def train(self):
-        pass
+    def train(self, data:torch.Tensor, labels:list, min_energy:float=0.8):
+        if data.dim() == 1:
+            data.unsqueeze_(0)
+        set = VectorSet(vector_size=self.vector_size)
+        set.Populate(data, labels)
+        self.subset = set.pca(min_energy=min_energy)
+    
+    def classify(self, vectors:torch.Tensor):
+        if vectors.dim() == 1:
+            vectors.unsqueeze_(0)
+        
+        # Classify all vectors by cossine similarity
+        max_likelihood = []
+        for vector in vectors:
+            cs = 0
+            for subspace in self.subset:
+                foo = self.cossine_similarity(vector, subspace)
+                if foo > cs: cs = foo; label = subspace.label
+            max_likelihood.append(label)
+        return max_likelihood
 
-    def eval(self):
-        pass
-
-    def cossine_similarity(vector:torch.Tensor, subspace:VectorSubspace):
+    def cossine_similarity(self, vector:torch.Tensor, subspace:VectorSubspace):
+        """
+        Returns S = \sum_{i=0}^{r-1} \frac{(x,\phi_i)^2}{\|x\|\|\phi_i\|}
+        """
         assert(len(vector) == subspace.vector_size)
+        vector = vector.type(torch.FloatTensor)
+        S = 0
+        for i in range(len(subspace)): # You can speed this up
+            S+=torch.inner(vector, subspace[i])**2 / (torch.inner(vector, vector) * torch.inner(subspace[i], subspace[i]))
+        return S
 
 # --- unittests
 class TestVectorSM(unittest.TestCase):
@@ -29,8 +52,28 @@ class TestVectorSM(unittest.TestCase):
 
     def test_cossine_similarity(self):
         sm = VectorSM()
-        pass
-        
+        subspace = VectorSubspace(vector_size=2)
+        subspace.append(torch.tensor([1, 0]))
+        vector = torch.tensor([0, 1])
+        self.assertTrue(torch.allclose(sm.cossine_similarity(vector, subspace), torch.zeros(1)))
+        vector = torch.tensor([1, 0])
+        self.assertTrue(torch.allclose(sm.cossine_similarity(vector, subspace), torch.ones(1)))
+    
+    def test_train(self):
+        sm = VectorSM(vector_size=32)
+        mock_data = torch.rand(100, 32)
+        mock_labels = [i%10 for i in list(range(100))]
+        sm.train(mock_data, mock_labels)
+    
+    def test_classify(self):
+        sm = VectorSM(vector_size=32)
+        mock_data = torch.rand(100, 32)
+        mock_labels = [i%10 for i in list(range(100))]
+        sm.train(mock_data, mock_labels)
+        mock_vector = torch.rand(10, 32)
+        labels = sm.classify(mock_vector)
+        self.assertEqual(len(labels), 10)
+
 
 if __name__ == "__main__":
     unittest.main()

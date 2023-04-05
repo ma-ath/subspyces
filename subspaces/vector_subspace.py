@@ -7,7 +7,7 @@ class VectorSubspace:
     """
     Class that defines a simple subspace
     """
-    def __init__(self, n:int=0, vector_size:int=0):
+    def __init__(self, n:int=0, vector_size:int=0, label=None):
         """
         n (int): number of vectors in subspace
         vector_size (int): size of vector in subspace
@@ -15,6 +15,7 @@ class VectorSubspace:
         self.n = n
         self.vector_size = vector_size
         self.A = torch.rand(self.n, self.vector_size)
+        self.label = label
     
     def __len__(self):
         return self.n
@@ -28,6 +29,7 @@ class VectorSubspace:
         if vector.dim() == 1:
             vector.unsqueeze_(0)
         assert(vector.shape[1] == self.vector_size)
+        vector = vector.type(torch.FloatTensor)
         self.n = self.n + vector.shape[0]
         self.A = torch.cat([self.A, vector], dim=0)
     

@@ -17,7 +17,7 @@ class VectorSet:
         self.vector_size = vector_size
         # In this version, we make all subspaces have the same vector size.
         # Maybe this is not completely necessary
-        self.set = {label: VectorSubspace(vector_size=self.vector_size) for label in self.labels}
+        self.set = {label: VectorSubspace(vector_size=self.vector_size, label=label) for label in self.labels}
     
     def __len__(self) -> int:
         return len(self.labels)
@@ -41,7 +41,7 @@ class VectorSet:
             # Check if label exists. If not, generate new subspace
             if label not in self.labels:
                 self.labels.append(label)
-                self.set[label] = VectorSubspace(vector_size=self.vector_size)
+                self.set[label] = VectorSubspace(vector_size=self.vector_size, label=label)
             self.set[label].append(vector)
     
     def pca(self, min_energy:float=0.8):
