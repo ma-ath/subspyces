@@ -14,15 +14,42 @@ class VectorSM:
         pass
 
     def train(self, data:torch.Tensor, labels:list, min_energy:float=0.8):
+        """
+        Applies PCA to a set of subspaces
+        """
         if data.dim() == 1:
             data.unsqueeze_(0)
         set = VectorSet(vector_size=self.vector_size)
         set.Populate(data, labels)
         self.subset = set.pca(min_energy=min_energy)
+
+    def eval(self, data:torch.Tensor, correct_labels:list):
+        """
+        Simple Method that implements a common evaluation procedure for classification problems
+        Returns a list of correct classifications, and the success ratio
+        """
+        if data.dim() == 1:
+            data.unsqueeze_(0)
+        assert(data.shape[0] == len(correct_labels))
+        assert(data.shape[1] == self.vector_size)
+        
+        predicted_labels = self.classify(data)
+        
+        correct_class = []
+        for l1, l2 in zip(predicted_labels, correct_labels):
+            correct_class.append(l1 == l2)
+        
+        prediction_ratio = correct_class.count(True) / len(correct_class)
+        
+        return correct_class, prediction_ratio
     
     def classify(self, vectors:torch.Tensor):
+        """
+        Classifies a tensor in one of the subspaces using the cossine similarity
+        """
         if vectors.dim() == 1:
             vectors.unsqueeze_(0)
+        assert(vectors.shape[1] == self.vector_size)
         
         # Classify all vectors by cossine similarity
         max_likelihood = []
@@ -73,6 +100,16 @@ class TestVectorSM(unittest.TestCase):
         mock_vector = torch.rand(10, 32)
         labels = sm.classify(mock_vector)
         self.assertEqual(len(labels), 10)
+    
+    def test_eval(self):
+        sm = VectorSM(vector_size=32)
+        mock_data = torch.rand(100, 32)
+        mock_labels = [i%10 for i in list(range(100))]
+        sm.train(mock_data, mock_labels)
+        mock_vector = torch.rand(10, 32)
+        mock_labels = [i for i in list(range(10))]
+        eval = sm.eval(mock_vector, mock_labels)
+        print(eval)
 
 
 if __name__ == "__main__":
