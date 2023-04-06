@@ -1,7 +1,7 @@
 import torch
 import unittest
 
-from vector_subspace import VectorSubspace
+from vector_space import VectorSpace
 from vector_set import VectorSet
 
 
@@ -60,7 +60,7 @@ class VectorSM:
                 if foo[i] > cs[i]: cs[i] = foo[i]; max_likelihood[i] = subspace.label
         return max_likelihood
 
-    def cossine_similarity(self, vector:torch.Tensor, subspace:VectorSubspace):
+    def cossine_similarity(self, vector:torch.Tensor, subspace:VectorSpace):
         """
         Returns S = \sum_{i=0}^{r-1} \frac{(x,\phi_i)^2}{\|x\|\|\phi_i\|}
         """
@@ -94,7 +94,7 @@ class TestVectorSM(unittest.TestCase):
 
     def test_cossine_similarity(self):
         sm = VectorSM()
-        subspace = VectorSubspace(vector_size=2)
+        subspace = VectorSpace(vector_size=2)
         subspace.append(torch.tensor([1, 0]))
         vector = torch.tensor([0, 1])
         self.assertTrue(torch.allclose(sm.cossine_similarity(vector, subspace), torch.zeros(1)))
