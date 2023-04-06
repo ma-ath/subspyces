@@ -1,5 +1,6 @@
 import torch
 import unittest
+from itertools import groupby
 
 from vector_subspace import VectorSubspace
 
@@ -27,7 +28,7 @@ class VectorSet:
             return self.set[label]
         raise(IndexError(f"Label {label} not in VectorSet"))
     
-    def Populate(self, vectors: torch.Tensor, labels:list) -> None:
+    def populate(self, vectors: torch.Tensor, labels:list) -> None:
         """
         Populates VectorSubspaces with vectors.
         If label does not exists in label list, generate it
@@ -37,18 +38,39 @@ class VectorSet:
         assert(len(vectors) == len(labels))
         assert(vectors.shape[1] == self.vector_size)
 
-        for vector, label in zip(vectors, labels):
-            # Check if label exists. If not, generate new subspace
+        # Order labels and vector
+        tensor_list = vectors.tolist()
+        lt = zip(labels, tensor_list)
+        lt = sorted(lt)
+        sorted_tensor = torch.tensor([i for _, i in lt])
+        sorted_labels = [i for i, _ in lt]
+
+        # Group labels
+        group_list = [list(g) for _, g in groupby(sorted_labels)]
+
+        # Populate subspaces in batches
+        i = 0
+        for group in group_list:
+            label = group[0]
             if label not in self.labels:
                 self.labels.append(label)
                 self.set[label] = VectorSubspace(vector_size=self.vector_size, label=label)
-            self.set[label].append(vector)
+
+            self.set[label].append(sorted_tensor[i:i+len(group)])
+            i += len(group)
+
+        # for vector, label in zip(vectors, labels):
+        #     # Check if label exists. If not, generate new subspace
+        #     if label not in self.labels:
+        #         self.labels.append(label)
+        #         self.set[label] = VectorSubspace(vector_size=self.vector_size, label=label)
+        #     self.set[label].append(vector)
     
     def pca(self, min_energy:float=0.8):
         subset = VectorSet(labels=self.labels, vector_size=self.vector_size)
         for label, subspace in self.set.items():
             subsubspace = subspace.pca(min_energy)
-            subset.Populate(subsubspace.A, [label]*len(subsubspace))
+            subset.populate(subsubspace.A, [label]*len(subsubspace))
         return subset
 
 
@@ -64,14 +86,14 @@ class TestSubspaces(unittest.TestCase):
             subspace = set[11]
         subspace = set[9]
     
-    def test_generate_subspaces(self):
+    def test_populate(self):
         set = VectorSet(vector_size=32)
 
         mock_data = torch.rand(10, 32)
         mock_labels = list(range(10))
 
         for _ in range(10):
-            set.Populate(mock_data, mock_labels)
+            set.populate(mock_data, mock_labels)
         
         assert(len(set.labels) == 10)
         assert(len(set[0]) == 10)
@@ -80,18 +102,18 @@ class TestSubspaces(unittest.TestCase):
         with self.assertRaises(AssertionError):
             mock_data = torch.rand(10, 32)
             mock_labels = list(range(9))
-            set.Populate(mock_data, mock_labels)
+            set.populate(mock_data, mock_labels)
 
         with self.assertRaises(AssertionError):
             mock_data = torch.rand(10, 24)
             mock_labels = list(range(10))
-            set.Populate(mock_data, mock_labels)
+            set.populate(mock_data, mock_labels)
     
     def test_pca(self):
         set = VectorSet(vector_size=32)
         mock_data = torch.rand(100, 32)
         mock_labels = [i%10 for i in list(range(100))]
-        set.Populate(mock_data, mock_labels)
+        set.populate(mock_data, mock_labels)
         subset = set.pca()
 
 if __name__ == "__main__":
