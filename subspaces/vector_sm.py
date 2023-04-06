@@ -11,7 +11,6 @@ class VectorSM:
     """
     def __init__(self, vector_size:int=1) -> None:
         self.vector_size = vector_size
-        pass
 
     def train(self, data:torch.Tensor, labels:list, min_energy:float=0.8):
         """
@@ -20,7 +19,7 @@ class VectorSM:
         if data.dim() == 1:
             data.unsqueeze_(0)
         set = VectorSet(vector_size=self.vector_size)
-        set.Populate(data, labels)
+        set.populate(data, labels)
         self.subset = set.pca(min_energy=min_energy)
 
     def eval(self, data:torch.Tensor, correct_labels:list):
@@ -65,11 +64,30 @@ class VectorSM:
         """
         Returns S = \sum_{i=0}^{r-1} \frac{(x,\phi_i)^2}{\|x\|\|\phi_i\|}
         """
-        assert(len(vector) == subspace.vector_size)
+        if vector.dim() == 1:
+            vector.unsqueeze_(0)
+        assert(vector.shape[1] == subspace.vector_size)
         vector = vector.type(torch.FloatTensor)
-        S = 0
-        for i in range(len(subspace)): # You can speed this up
-            S+=torch.inner(vector, subspace[i])**2 / (torch.inner(vector, vector) * torch.inner(subspace[i], subspace[i]))
+
+        S = torch.sum(
+            torch.div(
+                torch.mm(vector, subspace.A.t())**2, 
+                torch.matmul(
+                    torch.sqrt(
+                        torch.diag(
+                            torch.mm(vector, vector.t()))).unsqueeze(0).t(),
+                            torch.sqrt(
+                                torch.diag(
+                                    torch.mm(subspace.A, subspace.A.t())
+                                    )
+                                ).unsqueeze(0)
+                            )
+                        )
+                    , dim=1)
+
+        # S = 0
+        # for i in range(len(subspace)): # You can speed this up
+        #     S+=torch.inner(vector, subspace[i])**2 / (torch.inner(vector, vector) * torch.inner(subspace[i], subspace[i]))
         return S
 
 
@@ -86,7 +104,9 @@ class TestVectorSM(unittest.TestCase):
         self.assertTrue(torch.allclose(sm.cossine_similarity(vector, subspace), torch.zeros(1)))
         vector = torch.tensor([1, 0])
         self.assertTrue(torch.allclose(sm.cossine_similarity(vector, subspace), torch.ones(1)))
-    
+        vector = torch.tensor([[0, 2], [1, 0]])
+        sm.cossine_similarity(vector, subspace)
+
     def test_train(self):
         sm = VectorSM(vector_size=32)
         mock_data = torch.rand(100, 32)
