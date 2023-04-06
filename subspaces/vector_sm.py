@@ -51,13 +51,13 @@ class VectorSM:
         assert(vectors.shape[1] == self.vector_size)
         
         # Classify all vectors by cossine similarity
-        max_likelihood = []
-        for vector in vectors:
-            cs = 0
-            for subspace in self.subset:
-                foo = self.cossine_similarity(vector, subspace)
-                if foo > cs: cs = foo; label = subspace.label
-            max_likelihood.append(label)
+        max_likelihood = [self.subset.labels[0]]*vectors.shape[0]
+        cs = [0]*vectors.shape[0]
+
+        for subspace in self.subset:
+            foo = self.cossine_similarity(vectors, subspace)
+            for i in range(len(foo)):
+                if foo[i] > cs[i]: cs[i] = foo[i]; max_likelihood[i] = subspace.label
         return max_likelihood
 
     def cossine_similarity(self, vector:torch.Tensor, subspace:VectorSubspace):
@@ -84,10 +84,6 @@ class VectorSM:
                             )
                         )
                     , dim=1)
-
-        # S = 0
-        # for i in range(len(subspace)): # You can speed this up
-        #     S+=torch.inner(vector, subspace[i])**2 / (torch.inner(vector, vector) * torch.inner(subspace[i], subspace[i]))
         return S
 
 
