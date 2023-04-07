@@ -91,7 +91,7 @@ class VectorMSM(VectorSM):
 
         cossine_similarities = torch.vstack(cossine_similarities)
 
-        # Unsort cossine similarities
+        # Unsort axis=0 cossine similarities. Sort axis=1 cossine_similarities by descending order
         z = zip(new_order, cossine_similarities)
         z = sorted(z)
         cossine_similarities = torch.vstack([space for _, space in z])
@@ -107,19 +107,23 @@ class TestVectorSM(unittest.TestCase):
 
     def test_cossine_similarity(self):
         msm = VectorMSM()
-        subspace = VectorSpace(vector_size=2)
-        subspace.append(torch.tensor([[0, 1], [1, 0]]))
-        subspace.append(torch.tensor([[0, 1], [1, 0]]))
-        vspace12 = VectorSpace(vector_size=2)
-        vspace12.append(torch.tensor([[1, 1]]))
-        vspace22 = VectorSpace(vector_size=2)
-        vspace22.append(torch.tensor([[-1, 1], [1, -1]]))
-        vspace32 = VectorSpace(vector_size=2)
-        vspace32.append(torch.tensor([[-1, 1], [1, -1], [0, 1]]))
+        subspace = VectorSpace(vector_size=3)
+        subspace.append(torch.tensor([[0, 0, 1], [0, 1, 0]]))
+        vspace12 = VectorSpace(vector_size=3)
+        vspace12.append(torch.tensor([[1, 0, 0]]))
+        vspace22 = VectorSpace(vector_size=3)
+        vspace22.append(torch.tensor([[1, 0, 0], [0, 0, 1]]))
+        vspace32 = VectorSpace(vector_size=3)
+        vspace32.append(torch.tensor([[0, 1, 1], [1, 0, 0], [0, 0, -1]]))
 
         test_list = [vspace22, vspace32, vspace22, vspace32, vspace12, vspace12, vspace12]
 
         similarity = msm.cossine_similarity(test_list, subspace)
+        self.assertTrue(torch.allclose(similarity[4], torch.zeros(2)))
+        self.assertTrue(torch.allclose(similarity[5], torch.zeros(2)))
+        self.assertTrue(torch.allclose(similarity[6], torch.zeros(2)))
+        self.assertTrue(torch.allclose(similarity[0], torch.tensor([1.0, 0.0])))
+        self.assertTrue(torch.allclose(similarity[2], torch.tensor([1.0, 0.0])))
 
 
     # def test_train(self):
