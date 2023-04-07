@@ -31,25 +31,27 @@ class VectorMSM(VectorSM):
         
     #     return correct_class, prediction_ratio
     
-    # def classify(self, vspace:list(VectorSpace)):
-    #     """
-    #     Classifies a tensor in one of the subspaces using the cossine similarity
-    #     """
-    #     if vectors.dim() == 1:
-    #         vectors.unsqueeze_(0)
-    #     assert(vectors.shape[1] == self.vector_size)
-        
-    #     # Classify all vectors by cossine similarity
-    #     max_likelihood = [self.subset.labels[0]]*vectors.shape[0]
-    #     cs = [0]*vectors.shape[0]
+    def classify(self, vspaces: List[VectorSpace]):
+        """
+        Classifies a list of subspace in one of the subspaces using the subspace_similarity metric
+        """
+        # Check if passing a list or a VectorSpace. Correct if necessary
+        if type(vspaces) is not list:
+            vspaces = [vspaces]
+        assert(type(vspaces[0] == VectorSpace))
 
-    #     for subspace in self.subset:
-    #         foo = self.cossine_similarity(vectors, subspace)
-    #         for i in range(len(foo)):
-    #             if foo[i] > cs[i]: cs[i] = foo[i]; max_likelihood[i] = subspace.label
-    #     return max_likelihood
+        # Classify all vectors by subspace similarity
+        max_likelihood = [self.subset.labels[0]]*len(vspaces)
+        ss = [0]*len(vspaces)
 
-    def subspace_similarities(self, vspaces: List[VectorSpace], subspace:VectorSpace):
+        for subspace in self.subset:
+            foo = self.subspace_similarity(vspaces, subspace)
+            for i in range(len(foo)):
+                if foo[i] > ss[i]: ss[i] = foo[i]; max_likelihood[i] = subspace.label
+            
+        return max_likelihood
+
+    def subspace_similarity(self, vspaces: List[VectorSpace], subspace:VectorSpace):
         cossine_similarities = self.cossine_similarity(vspaces, subspace)
         S = torch.sum(cossine_similarities, dim=1) / cossine_similarities.shape[1]
         return S
@@ -141,26 +143,34 @@ class TestVectorSM(unittest.TestCase):
 
         vspace_list = [vspace22, vspace12, vspace22, vspace12, vspace12, vspace22]
 
-        self.assertTrue(torch.allclose(msm.subspace_similarities(vspace_list, subspace), torch.tensor([0.5000, 0.0000, 0.5000, 0.0000, 0.0000, 0.5000])))
+        self.assertTrue(torch.allclose(msm.subspace_similarity(vspace_list, subspace), torch.tensor([0.5000, 0.0000, 0.5000, 0.0000, 0.0000, 0.5000])))
 
-        pass
-
-
-    # def test_train(self):
-    #     sm = VectorSM(vector_size=32)
-    #     mock_data = torch.rand(100, 32)
-    #     mock_labels = [i%10 for i in list(range(100))]
-    #     sm.train(mock_data, mock_labels)
+    def test_train(self):
+        msm = VectorMSM(vector_size=32)
+        mock_data = torch.rand(100, 32)
+        mock_labels = [i%10 for i in list(range(100))]
+        msm.train(mock_data, mock_labels)
     
-    # def test_classify(self):
-    #     sm = VectorSM(vector_size=32)
-    #     mock_data = torch.rand(100, 32)
-    #     mock_labels = [i%10 for i in list(range(100))]
-    #     sm.train(mock_data, mock_labels)
-    #     mock_vector = torch.rand(10, 32)
-    #     labels = sm.classify(mock_vector)
-    #     self.assertEqual(len(labels), 10)
-    
+    def test_classify(self):
+        msm = VectorMSM(vector_size=32)
+        mock_data = torch.rand(100, 32)
+        mock_labels = [i%10 for i in list(range(100))]
+        msm.train(mock_data, mock_labels)
+
+        mock_subspace1 = VectorSpace(vector_size=32)
+        mock_subspace1.append(torch.rand(6, 32))
+        mock_subspace2 = VectorSpace(vector_size=32)
+        mock_subspace2.append(torch.rand(5, 32))
+        mock_subspace3 = VectorSpace(vector_size=32)
+        mock_subspace3.append(torch.rand(7, 32))
+
+        labels = msm.classify(mock_subspace1)
+        self.assertEqual(len(labels), 1)
+
+        labels = msm.classify([mock_subspace1, mock_subspace2, mock_subspace3])
+        self.assertEqual(len(labels), 3)
+
+
     # def test_eval(self):
     #     sm = VectorSM(vector_size=32)
     #     mock_data = torch.rand(100, 32)
