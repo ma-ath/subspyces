@@ -61,6 +61,9 @@ class VectorMSM(VectorSM):
         Returns the cossine similarity between a list of vector spaces and one subspace
         return shape: [vspace, cos^2_i]
         """
+        if type(vspaces) is not list:
+            vspaces = [vspaces]
+        assert(type(vspaces[0] == VectorSpace))
         # Order list of vector spaces and group vector spaces of same size in batches
         original_order = torch.linspace(1, len(vspaces), len(vspaces)).tolist()
 
