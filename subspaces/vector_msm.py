@@ -54,11 +54,21 @@ class VectorMSM(VectorSM):
         Returns the cossine similarity between a list of vector spaces and one subspace
         """
         # Order list of vector spaces and group vector spaces of same size in batches
+        original_order = torch.linspace(1, len(vspaces), len(vspaces)).tolist()
+
         nlist = [space.n for space in vspaces]
-        z = zip(vspaces, nlist)
+        z = zip(vspaces, nlist, original_order)
         z = sorted(z)
-        sorted_vspaces = [i for i, _ in z]
-        sorted_nlist = [i for _, i in z]
+
+        sorted_vspaces = []
+        sorted_nlist = []
+        new_order = []
+
+        for vs, nl, no in z:
+            sorted_vspaces.append(vs)
+            sorted_nlist.append(nl)
+            new_order.append(no)
+
         group_nlist = [len(list(n)) for _, n in groupby(sorted_nlist)]
 
         # Group vector spaces in 3d tensors, calculate cossine similarities in batches
@@ -70,7 +80,7 @@ class VectorMSM(VectorSM):
             batch_subspace = subspace.A.unsqueeze(0).repeat(n, 1, 1)
 
             X = torch.bmm(
-                    torch.bmm(batch_subspace, vspace_tensor.transpose(2, 1)),
+                    torch.bmm(batch_subspace, vspace_tensor.transpose(1, 2)),
                     torch.bmm(batch_subspace, vspace_tensor.transpose(1, 2)).transpose(1, 2)
             )
 
@@ -81,7 +91,10 @@ class VectorMSM(VectorSM):
         cossine_similarities = torch.vstack(cossine_similarities)
 
         # Unsort cossine similarities
-        print(cossine_similarities.shape)
+        z = zip(new_order, cossine_similarities)
+        z = sorted(z)
+        cossine_similarities = torch.vstack([space for _, space in z])
+
         return cossine_similarities
 
 
