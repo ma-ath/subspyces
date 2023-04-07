@@ -170,7 +170,6 @@ class TestVectorSM(unittest.TestCase):
         labels = msm.classify([mock_subspace1, mock_subspace2, mock_subspace3])
         self.assertEqual(len(labels), 3)
 
-
     def test_eval(self):
         msm = VectorMSM(vector_size=32)
         mock_data = torch.rand(100, 32)
