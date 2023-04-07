@@ -49,10 +49,12 @@ class VectorSpace:
         U, S, Vh = self.svd(full_matrices=False)
 
         # Get base vectors for subspace from min_energy
-        if min_energy < 1:
-            cumulative_energy = torch.cumsum(S, dim=0) / torch.sum(S)
-            n = next(x[0]+1 for x in enumerate(cumulative_energy) if x[1] > min_energy)
-        else: n=len(S)
+        cumulative_energy = torch.cumsum(S, dim=0) / torch.sum(S)
+        for i, energy in enumerate(cumulative_energy):
+            n = i+1
+            if energy >= min_energy:
+                break
+            
         # Generate Subspace
         subspace = VectorSpace(vector_size=self.vector_size)
         subspace.append(Vh[:n])
