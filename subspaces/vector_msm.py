@@ -61,8 +61,9 @@ class VectorMSM(VectorSM):
         sorted_nlist = [i for _, i in z]
         group_nlist = [len(list(n)) for _, n in groupby(sorted_nlist)]
 
-        # Group vector spaces in 3d tensors, calculate cossine similarities in one go
+        # Group vector spaces in 3d tensors, calculate cossine similarities in batches
         i = 0
+        cossine_similarities = []
         for n in group_nlist:
             vspace_tensor = torch.vstack([vspace.A.unsqueeze(0) for vspace in sorted_vspaces[i:i+n]])
             # vspace_tensor.shape = [vspace, vspace.n, vspace.vector_size]
@@ -72,16 +73,16 @@ class VectorMSM(VectorSM):
                     torch.bmm(batch_subspace, vspace_tensor.transpose(2, 1)),
                     torch.bmm(batch_subspace, vspace_tensor.transpose(1, 2)).transpose(1, 2)
             )
-            print("subspace", batch_subspace.shape)
-            print("tensor", vspace_tensor.shape)
-            print("X", X.shape)            
 
+            L, Q = torch.linalg.eigh(X) # X is hermitian, can use eigh
+            cossine_similarities.append(L)
             i += n
 
-        S = 0
+        cossine_similarities = torch.vstack(cossine_similarities)
 
         # Unsort cossine similarities
-        return S
+        print(cossine_similarities.shape)
+        return cossine_similarities
 
 
 # --- unittests
@@ -92,6 +93,7 @@ class TestVectorSM(unittest.TestCase):
     def test_cossine_similarity(self):
         msm = VectorMSM()
         subspace = VectorSpace(vector_size=2)
+        subspace.append(torch.tensor([[0, 1], [1, 0]]))
         subspace.append(torch.tensor([[0, 1], [1, 0]]))
         vspace12 = VectorSpace(vector_size=2)
         vspace12.append(torch.tensor([[1, 1]]))
