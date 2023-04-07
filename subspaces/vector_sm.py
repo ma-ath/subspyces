@@ -70,20 +70,23 @@ class VectorSM:
         vector = vector.type(torch.FloatTensor)
 
         S = torch.sum(
-            torch.div(
-                torch.mm(vector, subspace.A.t())**2, 
-                torch.matmul(
-                    torch.sqrt(
-                        torch.diag(
-                            torch.mm(vector, vector.t()))).unsqueeze(0).t(),
-                            torch.sqrt(
-                                torch.diag(
-                                    torch.mm(subspace.A, subspace.A.t())
-                                    )
-                                ).unsqueeze(0)
+                torch.div(
+                    torch.mm(vector, subspace.A.t())**2,
+                    torch.matmul(
+                        torch.sqrt(
+                            torch.diag(
+                                torch.mm(vector, vector.t()
+                                )
                             )
-                        )
-                    , dim=1)
+                        ).unsqueeze(0).t(),
+                        torch.sqrt(
+                            torch.diag(
+                                torch.mm(subspace.A, subspace.A.t())
+                            )
+                        ).unsqueeze(0)
+                    )
+                ), dim=1
+            )
         return S
 
 

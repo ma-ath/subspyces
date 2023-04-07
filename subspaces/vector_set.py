@@ -11,8 +11,8 @@ class VectorSet:
     """
     def __init__(self, labels:list=[], vector_size:int=1) -> None:
         """
-        labels (list): list of labels for each subspace
-        vector_size (int): size of vector in each subspace
+        labels (list): list of labels for each vspace
+        vector_size (int): size of vector in each vspace
         """
         self.labels = labels
         self.vector_size = vector_size
@@ -60,7 +60,7 @@ class VectorSet:
             i += len(group)
 
         # for vector, label in zip(vectors, labels):
-        #     # Check if label exists. If not, generate new subspace
+        #     # Check if label exists. If not, generate new vspace
         #     if label not in self.labels:
         #         self.labels.append(label)
         #         self.set[label] = VectorSpace(vector_size=self.vector_size, label=label)
@@ -68,9 +68,9 @@ class VectorSet:
     
     def pca(self, min_energy:float=0.8):
         subset = VectorSet(labels=self.labels, vector_size=self.vector_size)
-        for label, subspace in self.set.items():
-            subsubspace = subspace.pca(min_energy)
-            subset.populate(subsubspace.A, [label]*len(subsubspace))
+        for label, vspace in self.set.items():
+            vsubspace = vspace.pca(min_energy)
+            subset.populate(vsubspace.A, [label]*len(vsubspace))
         return subset
 
 
@@ -83,8 +83,8 @@ class TestSubspaces(unittest.TestCase):
         set = VectorSet(list(range(10)))
         self.assertEqual(len(set), 10)
         with self.assertRaises(IndexError):
-            subspace = set[11]
-        subspace = set[9]
+            vspace = set[11]
+        vspace = set[9]
     
     def test_populate(self):
         set = VectorSet(vector_size=32)
