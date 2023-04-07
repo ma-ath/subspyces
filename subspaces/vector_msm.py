@@ -49,6 +49,11 @@ class VectorMSM(VectorSM):
     #             if foo[i] > cs[i]: cs[i] = foo[i]; max_likelihood[i] = subspace.label
     #     return max_likelihood
 
+    def subspace_similarities(self, vspaces: List[VectorSpace], subspace:VectorSpace):
+        cossine_similarities = self.cossine_similarity(vspaces, subspace)
+        S = torch.sum(cossine_similarities, dim=1) / cossine_similarities.shape[1]
+        return S
+        
     def cossine_similarity(self, vspaces: List[VectorSpace], subspace:VectorSpace):
         """
         Returns the cossine similarity between a list of vector spaces and one subspace
@@ -116,14 +121,29 @@ class TestVectorSM(unittest.TestCase):
         vspace32 = VectorSpace(vector_size=3)
         vspace32.append(torch.tensor([[0, 1, 1], [1, 0, 0], [0, 0, -1]]))
 
-        test_list = [vspace22, vspace32, vspace22, vspace32, vspace12, vspace12, vspace12]
+        vspace_list = [vspace22, vspace32, vspace22, vspace32, vspace12, vspace12, vspace12]
 
-        similarity = msm.cossine_similarity(test_list, subspace)
+        similarity = msm.cossine_similarity(vspace_list, subspace)
         self.assertTrue(torch.allclose(similarity[4], torch.zeros(2)))
         self.assertTrue(torch.allclose(similarity[5], torch.zeros(2)))
         self.assertTrue(torch.allclose(similarity[6], torch.zeros(2)))
         self.assertTrue(torch.allclose(similarity[0], torch.tensor([1.0, 0.0])))
         self.assertTrue(torch.allclose(similarity[2], torch.tensor([1.0, 0.0])))
+    
+    def test_subspace_similarities(self):
+        msm = VectorMSM()
+        subspace = VectorSpace(vector_size=3)
+        subspace.append(torch.tensor([[0, 0, 1], [0, 1, 0]]))
+        vspace12 = VectorSpace(vector_size=3)
+        vspace12.append(torch.tensor([[1, 0, 0]]))
+        vspace22 = VectorSpace(vector_size=3)
+        vspace22.append(torch.tensor([[1, 0, 0], [0, 0, 1]]))
+
+        vspace_list = [vspace22, vspace12, vspace22, vspace12, vspace12, vspace22]
+
+        self.assertTrue(torch.allclose(msm.subspace_similarities(vspace_list, subspace), torch.tensor([0.5000, 0.0000, 0.5000, 0.0000, 0.0000, 0.5000])))
+
+        pass
 
 
     # def test_train(self):
