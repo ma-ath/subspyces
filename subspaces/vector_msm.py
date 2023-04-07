@@ -11,25 +11,25 @@ class VectorMSM(VectorSM):
     """
     Class that implements a simple mutual subspace method for vector subspaces
     """
-    # def eval(self, data:list(VectorSpace), correct_labels:list):
-    #     """
-    #     Simple Method that implements a common evaluation procedure for classification problems
-    #     Returns a list of correct classifications, and the success ratio
-    #     """
-    #     if data.dim() == 1:
-    #         data.unsqueeze_(0)
-    #     assert(data.shape[0] == len(correct_labels))
-    #     assert(data.shape[1] == self.vector_size)
+    def eval(self, data: List[VectorSpace], correct_labels:list):
+        """
+        Simple Method that implements a common evaluation procedure for classification problems
+        Returns a list of correct classifications, and the success ratio
+        """
+        if type(data) is not list:
+            data = [data]
+        assert(type(data[0] == VectorSpace))
+        assert(len(data) == len(correct_labels))
         
-    #     predicted_labels = self.classify(data)
+        predicted_labels = self.classify(data)
         
-    #     correct_class = []
-    #     for l1, l2 in zip(predicted_labels, correct_labels):
-    #         correct_class.append(l1 == l2)
+        correct_class = []
+        for l1, l2 in zip(predicted_labels, correct_labels):
+            correct_class.append(l1 == l2)
         
-    #     prediction_ratio = correct_class.count(True) / len(correct_class)
+        prediction_ratio = correct_class.count(True) / len(correct_class)
         
-    #     return correct_class, prediction_ratio
+        return correct_class, prediction_ratio
     
     def classify(self, vspaces: List[VectorSpace]):
         """
@@ -171,14 +171,20 @@ class TestVectorSM(unittest.TestCase):
         self.assertEqual(len(labels), 3)
 
 
-    # def test_eval(self):
-    #     sm = VectorSM(vector_size=32)
-    #     mock_data = torch.rand(100, 32)
-    #     mock_labels = [i%10 for i in list(range(100))]
-    #     sm.train(mock_data, mock_labels)
-    #     mock_vector = torch.rand(10, 32)
-    #     mock_labels = [i for i in list(range(10))]
-    #     eval = sm.eval(mock_vector, mock_labels)
+    def test_eval(self):
+        msm = VectorMSM(vector_size=32)
+        mock_data = torch.rand(100, 32)
+        mock_labels = [i%10 for i in list(range(100))]
+        msm.train(mock_data, mock_labels)
+        
+        mock_subspaces = []
+        for i in range(10):
+            mock_subspaces.append(VectorSpace(vector_size=32))
+            mock_subspaces[i].append(torch.rand(6, 32))
+        mock_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+        eval = msm.eval(mock_subspaces, mock_labels)
+        print(eval)
 
 
 if __name__ == "__main__":
