@@ -61,6 +61,15 @@ class VectorSpace:
 
         return subspace
 
+    def __lt__(self, other):
+         return self.n < other.n
+    
+    def __str__(self):
+        return f"VectorSpace:{self.n}x{self.vector_size}"
+
+    def __repr__(self):
+        return f"VectorSpace:{self.n}x{self.vector_size}"
+
 
 # --- unittests
 class TestVectorSpace(unittest.TestCase):
@@ -95,6 +104,13 @@ class TestVectorSpace(unittest.TestCase):
         assert(len(pca_base) <= len(subspace))
         pca_base = subspace.pca(min_energy=1)
         assert(len(pca_base) == len(subspace))
+    
+    def test_lt(self):
+        vspace1 = VectorSpace(10)
+        vspace2 = VectorSpace(9)
+        vspace3 = VectorSpace(0)
+        foo_list = [vspace2, vspace1, vspace3]
+        self.assertEqual(sorted(foo_list), [vspace3, vspace2, vspace1])
 
 
 if __name__ == "__main__":
