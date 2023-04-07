@@ -52,6 +52,7 @@ class VectorMSM(VectorSM):
     def cossine_similarity(self, vspaces: List[VectorSpace], subspace:VectorSpace):
         """
         Returns the cossine similarity between a list of vector spaces and one subspace
+        return shape: [vspace, cos^2_i]
         """
         # Order list of vector spaces and group vector spaces of same size in batches
         original_order = torch.linspace(1, len(vspaces), len(vspaces)).tolist()
@@ -94,6 +95,7 @@ class VectorMSM(VectorSM):
         z = zip(new_order, cossine_similarities)
         z = sorted(z)
         cossine_similarities = torch.vstack([space for _, space in z])
+        cossine_similarities, _ = cossine_similarities.sort(dim=1, descending=True)
 
         return cossine_similarities
 
