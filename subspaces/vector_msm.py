@@ -186,7 +186,6 @@ class TestVectorSM(unittest.TestCase):
         mock_labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
         eval = msm.eval(mock_subspaces, mock_labels)
-        print(eval)
 
 
 if __name__ == "__main__":

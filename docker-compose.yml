@@ -1,0 +1,13 @@
+services:
+  torch:
+    build: ./docker
+    volumes:
+      - ${MAIN_PATH}:/mlima
+      - ${DATASET_PATH}:/dataset:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

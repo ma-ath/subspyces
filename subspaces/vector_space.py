@@ -39,11 +39,11 @@ class VectorSpace:
 
     def pca(self, min_energy:float=0.8):
         # calculate mean vector
-        mean_vector = self.A.mean(dim=0)
+        # mean_vector = self.A.mean(dim=0)
 
         # standardize data matrix
-        A_pca = torch.sub(self.A, mean_vector)
-        A_pca = torch.div(A_pca, math.sqrt(self.vector_size))
+        # A_pca = torch.sub(self.A, mean_vector)
+        # A_pca = torch.div(A_pca, math.sqrt(self.vector_size))
 
         # Calculate SVD
         U, S, Vh = self.svd(full_matrices=False)

@@ -1,0 +1,10 @@
+
+curl
+ca-certificates
+software-properties-common
+sudo
+git
+vim
+tmux
+htop
+nvtop
