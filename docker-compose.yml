@@ -1,9 +1,9 @@
 services:
   torch:
     build: ./docker
+    platform: linux/amd64
     volumes:
       - ${MAIN_PATH}:/mlima
-      - ${DATASET_PATH}:/dataset:ro
     deploy:
       resources:
         reservations:
