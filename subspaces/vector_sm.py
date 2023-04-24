@@ -87,6 +87,7 @@ class VectorSM:
                     )
                 ), dim=1
             )
+        print(S)
         return S
 
 
