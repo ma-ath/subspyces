@@ -7,7 +7,7 @@ class VectorSpace:
     """
     Class that defines a simple subspace
     """
-    def __init__(self, dim: int = 0, label=None):
+    def __init__(self, dim: int = 0, label=None) -> None:
         """
         n (int): number of vectors in subspace
         vector_size (int): size of vector in subspace
@@ -21,15 +21,15 @@ class VectorSpace:
     def __len__(self) -> int:
         return self.n
 
-    def __getitem__(self, i: int):
+    def __getitem__(self, i: int) -> torch.Tensor:
         if i < self.n and i >= 0:
             return self._data[i]
         raise (IndexError("Index i out of bound"))
 
-    def to(self, device: Union[torch.device, str]):
+    def to(self, device: Union[torch.device, str]) -> None:
         self._data.to(device=device)
 
-    def append(self, vector: Union[torch.Tensor, np.ndarray]):
+    def append(self, vector: Union[torch.Tensor, np.ndarray]) -> None:
         if type(vector) is np.ndarray:
             vector = torch.from_numpy(vector)
         if not isinstance(vector, torch.Tensor):
@@ -43,11 +43,11 @@ class VectorSpace:
         self.n = self.n + vector.shape[0]
         self._data = torch.cat([self._data, vector], dim=0)
 
-    def __lt__(self, other):
+    def __lt__(self, other) -> int:
         return self.n < other.n
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"VectorSpace:{self.n}x{self.dim}"
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"VectorSpace:{self.n}x{self.dim}"
