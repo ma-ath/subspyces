@@ -50,4 +50,4 @@ class VectorSpace:
         return f"VectorSpace:{self.n}x{self.dim}"
 
     def __repr__(self) -> str:
-        return f"VectorSpace:{self.n}x{self.dim}"
+        return self.__str__
