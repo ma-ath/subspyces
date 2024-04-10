@@ -24,7 +24,6 @@ class IdentityGenerator(AbstractGenerator):
         If label does not exists in label list, generate it
         """
         loader = DataLoader(dataset, batch_size=batch_size)
-        label_list = []
         v_space_list = dict()
 
         for batch_data, batch_label in loader:
@@ -50,10 +49,10 @@ class IdentityGenerator(AbstractGenerator):
             for group in group_list:
                 label = group[0]
                 # Create subspace if it doesn't exist
-                if label not in label_list:
-                    label_list.append(label)
-                    v_space_list[label] = VectorSpace(dim=batch_data.shape[1], label=label)
-                v_space_list[label].append(sorted_tensor[i:i+len(group)])
+                # TODO: remove conversion to string here
+                if str(label) not in v_space_list:
+                    v_space_list[str(label)] = VectorSpace(dim=batch_data.shape[1], label=str(label))
+                v_space_list[str(label)].append(sorted_tensor[i:i+len(group)])
                 i += len(group)
 
-        return v_space_list.items()
+        return v_space_list
