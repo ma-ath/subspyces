@@ -8,7 +8,7 @@
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./subspaces",
+        "./subspaces/tests",
         "-p",
         "*_test.py"
     ],
