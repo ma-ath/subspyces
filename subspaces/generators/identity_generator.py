@@ -1,15 +1,15 @@
 import torch
 from torch.utils.data import Dataset, DataLoader
 from itertools import groupby
+from typing import List
 
-from subspaces import VectorSet, VectorSpace
+from subspaces import VectorSpace
 from .abstract_generator import AbstractGenerator
 
 
 class IdentityGenerator(AbstractGenerator):
     """
-    Takes a set of data and generates a VectorSet where each VectorSpace is simply the
-    input data organized by labels
+    Takes a torch dataset and organizes it into many VectorSpace, one for each label
     """
 
     def __init__(self):
@@ -18,7 +18,7 @@ class IdentityGenerator(AbstractGenerator):
     def __str__(self) -> str:
         return "IdentityGenerator"
 
-    def generate(self, dataset: Dataset, batch_size: int = 32, *args, **kwargs) -> VectorSet:
+    def generate(self, dataset: Dataset, batch_size: int = 32, *args, **kwargs) -> List[VectorSpace]:
         """
         Populates VectorSpaces with vectors.
         If label does not exists in label list, generate it
@@ -31,6 +31,8 @@ class IdentityGenerator(AbstractGenerator):
             # Format data
             if data.dim() == 1:
                 data.unsqueeze_(0)
+            if data.dim() > 2:
+                raise (RuntimeError("Data must be a Vector"))
 
             # Order labels and vector
             tensor_list = data.tolist()

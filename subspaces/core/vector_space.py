@@ -7,7 +7,7 @@ class VectorSpace:
     """
     Class that defines a simple subspace
     """
-    def __init__(self, dim: int = 0, label=None) -> None:
+    def __init__(self, dim: int, label=None) -> None:
         """
         n (int): number of vectors in subspace
         vector_size (int): size of vector in subspace

@@ -1,7 +1,7 @@
 from torch.utils.data import Dataset
-from typing import Union
+from typing import List
 
-from subspaces import VectorSpace, VectorSet
+from subspaces import VectorSpace
 
 
 class AbstractGenerator:
@@ -17,5 +17,5 @@ class AbstractGenerator:
     def __str__(self) -> str:
         raise (NotImplementedError)
 
-    def generate(self, dataset: Dataset, *args, **kwargs) -> Union[VectorSpace, VectorSet]:
+    def generate(self, dataset: Dataset, *args, **kwargs) -> List[VectorSpace]:
         raise (NotImplementedError)
