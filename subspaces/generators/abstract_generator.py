@@ -8,8 +8,7 @@ class AbstractGenerator:
     """
     Abstract base class for subspace generators
 
-    A subspace generator receives a torch dataset and outputs a VectorSpace (unique label),
-    or VectorSet (multiple labels).
+    A subspace generator receives a torch dataset and outputs a list of VectorSpace.
     """
     def __init__(self):
         raise (NotImplementedError)
