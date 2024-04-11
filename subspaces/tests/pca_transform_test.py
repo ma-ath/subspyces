@@ -14,7 +14,7 @@ class TestPCATransform(unittest.TestCase):
         # dataset = FakeData(64, [32, 32], 2,
         #                    transform=T.Compose([T.PILToTensor(), torch.flatten]))
         dataset = MNIST("~/datasets", download=True, train=False,
-                        transform=T.Compose([T.PILToTensor(), torch.flatten]))
+                        transform=T.Compose([T.ToTensor(), torch.flatten]))
         generator = IdentityGenerator()
 
         self.vector_spaces = generator.generate(dataset, batch_size=32)

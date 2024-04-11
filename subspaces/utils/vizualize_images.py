@@ -58,7 +58,7 @@ if __name__ == '__main__':
     from subspaces.generators import IdentityGenerator
 
     dataset = MNIST("~/datasets", download=True, train=False,
-                    transform=T.Compose([T.PILToTensor(), torch.flatten]))
+                    transform=T.Compose([T.ToTensor(), torch.flatten]))
     generator = IdentityGenerator()
 
     vector_spaces = generator.generate(dataset, batch_size=32)

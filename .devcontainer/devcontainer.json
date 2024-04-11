@@ -25,7 +25,16 @@
 		"vscode": {
 			"extensions": [
 				"ms-python.flake8",
-				"ms-azuretools.vscode-docker"
+				"ms-azuretools.vscode-docker",
+				"ms-toolsai.jupyter-keymap",
+				"ms-toolsai.jupyter",
+				"ms-toolsai.vscode-jupyter-cell-tags",
+				"ms-toolsai.jupyter-renderers",
+				"ms-toolsai.vscode-jupyter-slideshow",
+				"ms-python.vscode-pylance",
+				"ms-python.python",
+				"ms-python.debugpy",
+				"ms-toolsai.tensorboard"
 			]
 		}
 	}

@@ -2,7 +2,6 @@ import torch
 from torch import linalg
 from sklearn.decomposition import PCA
 import warnings
-from warnings import WarningMessage
 
 from .abstract_transform import AbstractTransform
 from subspaces import VectorSpace
