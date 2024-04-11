@@ -39,7 +39,13 @@ class IdentityGenerator(AbstractGenerator):
             lt = zip(batch_label, tensor_list)
             lt = sorted(lt)
             sorted_tensor = torch.tensor([i for _, i in lt])
-            sorted_labels = [i for i, _ in lt]
+
+            # If labels are torch.Tensor(.), transform then to integers
+            # torch.Tensors <especifically> are giving problems on dict indexing.
+            if type(lt[0][0]) is torch.Tensor:
+                sorted_labels = [int(i) for i, _ in lt]
+            else:
+                sorted_labels = [i for i, _ in lt]
 
             # Group labels
             group_list = [list(g) for _, g in groupby(sorted_labels)]
@@ -49,10 +55,9 @@ class IdentityGenerator(AbstractGenerator):
             for group in group_list:
                 label = group[0]
                 # Create subspace if it doesn't exist
-                # TODO: remove conversion to string here
-                if str(label) not in v_space_list:
-                    v_space_list[str(label)] = VectorSpace(dim=batch_data.shape[1], label=str(label))
-                v_space_list[str(label)].append(sorted_tensor[i:i+len(group)])
+                if label not in v_space_list:
+                    v_space_list[label] = VectorSpace(dim=batch_data.shape[1], label=label)
+                v_space_list[label].append(sorted_tensor[i:i+len(group)])
                 i += len(group)
 
         return v_space_list

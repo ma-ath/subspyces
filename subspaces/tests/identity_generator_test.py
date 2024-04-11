@@ -3,7 +3,7 @@ import torch
 import torchvision.transforms as T
 from torchvision.datasets import MNIST, FakeData
 
-from subspaces import VectorSpace
+# from subspaces import VectorSpace
 from subspaces.generators import IdentityGenerator
 
 
