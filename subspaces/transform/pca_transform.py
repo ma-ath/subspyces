@@ -20,7 +20,7 @@ class PCATransform(AbstractTransform):
         return "PCATransform"
 
     def transform(self, vector_space: VectorSpace, *args, **kwargs) -> VectorSpace:
-        pca_data = self._pca_transform.fit_transform(vector_space._data)
-        pca_vspace = VectorSpace(dim=vector_space.dim, label=vector_space.label)
-        pca_vspace.append(pca_data)
-        return pca_vspace
+        pca_ = self._pca_transform.fit(vector_space._data)
+        new_vector_space = VectorSpace(dim=vector_space.dim, label=vector_space.label)
+        new_vector_space.append(pca_.components_.copy())
+        return new_vector_space

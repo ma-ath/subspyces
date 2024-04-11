@@ -19,6 +19,9 @@ USER $USERNAME
 RUN sudo usermod --append --groups video $USERNAME
 
 # Install dependencies
-RUN sudo apt update && \
-    sudo apt upgrade -y && \
-    sudo apt install -y build-essential git tmux vim
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Tokyo
+RUN sudo apt-get update && \
+    sudo apt-get upgrade -y && \
+    sudo -E apt-get install -y --no-install-recommends\
+        build-essential git tmux vim python3-tk

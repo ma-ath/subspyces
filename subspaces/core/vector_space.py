@@ -21,10 +21,13 @@ class VectorSpace:
     def __len__(self) -> int:
         return self.n
 
-    def __getitem__(self, i: int) -> torch.Tensor:
-        if i < self.n and i >= 0:
-            return self._data[i]
-        raise (IndexError("Index i out of bound"))
+    def __getitem__(self, i: Union[int, slice]) -> torch.Tensor:
+        if type(i) is slice:
+            if i.stop >= self.n or i.start < 0:
+                raise (IndexError("Index i out of bound"))
+        elif i >= self.n and i < 0:
+            raise (IndexError("Index i out of bound"))
+        return self._data[i]
 
     def to(self, device: Union[torch.device, str]) -> None:
         self._data.to(device=device)

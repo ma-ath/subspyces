@@ -11,17 +11,18 @@ from subspaces.generators import IdentityGenerator
 # --- unittests
 class TestPCATransform(unittest.TestCase):
     def setUp(self):
-        self.generator = IdentityGenerator()
-        self.transform = PCATransform()
-        self.dataset = MNIST("~/datasets", download=True, train=False,
-                             transform=T.Compose([T.PILToTensor(), torch.flatten]))
-        self. = self.generator.generate(self.dataset, batch_size=32)
+        # dataset = FakeData(64, [32, 32], 2,
+        #                    transform=T.Compose([T.PILToTensor(), torch.flatten]))
+        dataset = MNIST("~/datasets", download=True, train=False,
+                        transform=T.Compose([T.PILToTensor(), torch.flatten]))
+        generator = IdentityGenerator()
 
-        # self.dataset = FakeData(64, [32, 32], 2,
-        #                         transform=T.Compose([T.PILToTensor(), torch.flatten]))
+        self.vector_spaces = generator.generate(dataset, batch_size=32)
 
     def test_transform(self):
-        _ = self.generator.generate(self.dataset, batch_size=32)
+        pca_transform = PCATransform(n_components=10)
+        for vector_space in self.vector_spaces.values():
+            _ = pca_transform.transform(vector_space)
 
 
 if __name__ == "__main__":

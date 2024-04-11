@@ -11,7 +11,8 @@
 	"runArgs": [
 	  "--gpus=all",
 	  "--network=host",
-	  "--env=DISPLAY=${localEnv:DISPLAY}"
+	  "--env=DISPLAY=${localEnv:DISPLAY}",
+	  "--volume=/tmp/.X11-unix:/tmp/.X11-unix"
 	],
 	"workspaceMount": "source=${localWorkspaceFolder},target=/${localWorkspaceFolderBasename},type=bind",
   	"workspaceFolder": "/${localWorkspaceFolderBasename}",
@@ -23,7 +24,8 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"ms-python.flake8"
+				"ms-python.flake8",
+				"ms-azuretools.vscode-docker"
 			]
 		}
 	}
