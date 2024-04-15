@@ -14,4 +14,4 @@ def structure_similarity(A: VectorSpace, B: VectorSpace) -> float:
 
     squared_cossines = linalg.svdvals(similarity_matrix)
 
-    return float(torch.mean(squared_cossines))
+    return float(torch.mean(torch.square(squared_cossines)))
