@@ -25,7 +25,9 @@ class PCATransform(AbstractTransform):
 
     def transform(self, vector_space: VectorSpace, *args, **kwargs) -> VectorSpace:
         if self.use_sklearn:
-            pca_ = self._pca_transform.fit(vector_space._data).components_.copy()
+            warnings.warn("sklearn calculates the PCA sligthly different then general subspaces. " +
+                          "Make sure you know what you are doing", UserWarning)
+            pca_ = self._pca_transform.fit(vector_space._data).components_.copy().T
         else:
             auto_correlation_matrix = torch.matmul(vector_space._data.H, vector_space._data)
             auto_correlation_matrix /= (vector_space.n-1)

@@ -1,5 +1,21 @@
+from typing import List
+from torch.utils.data import Dataset
+
 from .abstract_generator import AbstractGenerator
+from subspaces import VectorSpace
 
 
 class PcaGenerator(AbstractGenerator):
-    pass
+    """
+    Abstract base class for subspace generators
+
+    A subspace generator receives a torch dataset and outputs a list of VectorSpace.
+    """
+    def __init__(self):
+        raise (NotImplementedError)
+
+    def __str__(self) -> str:
+        raise (NotImplementedError)
+
+    def generate(self, dataset: Dataset, *args, **kwargs) -> List[VectorSpace]:
+        raise (NotImplementedError)

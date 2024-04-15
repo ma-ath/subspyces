@@ -67,5 +67,5 @@ if __name__ == '__main__':
 
     pca_vector_space = pca_transform.transform(vector_spaces[0])
 
-    vizualize_images(pca_vector_space, 1, image_shape=[28, 28])
-    vizualize_images(pca_vector_space, slice(1, 5), image_shape=[28, 28])
+    # vizualize_images(pca_vector_space, 1, image_shape=[28, 28])
+    vizualize_images(pca_vector_space, slice(0, 9), image_shape=[28, 28])
