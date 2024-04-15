@@ -9,7 +9,8 @@ def structure_similarity(A: VectorSpace, B: VectorSpace) -> float:
     if A.dim != B.dim:
         raise (AssertionError(f"VectorSpaces have different dimension! {A.dim} and {B.dim}"))
 
-    similarity_matrix = F.normalize(A._data) @ F.normalize(B._data).T
+    similarity_matrix = torch.matmul(F.normalize(A._data),
+                                     F.normalize(B._data).H)
 
     squared_cossines = linalg.svdvals(similarity_matrix)
 

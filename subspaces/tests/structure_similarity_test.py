@@ -24,12 +24,12 @@ class TestPCATransform(unittest.TestCase):
             self.data[vector_space.label] = pca_transform.transform(vector_space)
 
     def is_psd(self, mat):
-        return bool(torch.allclose(mat, mat.T) and (torch.linalg.eigvals(mat).real >= 0).all())
+        return bool(torch.allclose(mat, mat.H) and (torch.linalg.eigvals(mat).real >= 0).all())
 
     def test_structure_similarity(self):
         gram_matrix = torch.zeros(10, 10)
-        for i in range(1, 10):
-            for j in range(1, 10):
+        for i in range(0, 10):
+            for j in range(0, 10):
                 gram_matrix[i][j] = structure_similarity(self.data[i], self.data[j])
         self.assertTrue(self.is_psd(gram_matrix))
 
