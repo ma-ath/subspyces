@@ -5,10 +5,28 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python Debugger: Module",
+            "name": "Python Debugger: Module vector_space_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspaces.tests.vector_space_test"
+        },
+        {
+            "name": "Python Debugger: Module pca_transform_test",
             "type": "debugpy",
             "request": "launch",
             "module": "subspaces.tests.pca_transform_test"
+        },
+        {
+            "name": "Python Debugger: Module identity_generator_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspaces.tests.identity_generator_test"
+        },
+        {
+            "name": "Python Debugger: Module vizualize_images",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspaces.utils.vizualize_images"
         }
     ]
 }

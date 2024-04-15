@@ -27,7 +27,7 @@ class PCATransform(AbstractTransform):
         if self.use_sklearn:
             pca_ = self._pca_transform.fit(vector_space._data).components_.copy()
         else:
-            auto_correlation_matrix = vector_space._data.T.conj() @ vector_space._data
+            auto_correlation_matrix = torch.matmul(vector_space._data.H, vector_space._data)
             auto_correlation_matrix /= (vector_space.n-1)
             eigenvalues, eigenvectors = linalg.eig(auto_correlation_matrix)
             #  Eigenvalues are supposed to be positive reals.
@@ -42,9 +42,10 @@ class PCATransform(AbstractTransform):
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 eigenvalues = torch.real(eigenvalues)
+                eigenvectors = torch.real(eigenvectors)
 
             sorted_indices = torch.argsort(eigenvalues, descending=True)
-            pca_ = eigenvectors[sorted_indices, :][:self.n_components]
+            pca_ = eigenvectors[:, sorted_indices][:, :self.n_components]
 
             # Check the eigenvectors for NaN. An NaN can show there was a numerical error
             if torch.isnan(pca_).any():
@@ -55,5 +56,5 @@ class PCATransform(AbstractTransform):
                 pca_ = torch.nan_to_num(pca_)
 
         new_vector_space = VectorSpace(dim=vector_space.dim, label=vector_space.label)
-        new_vector_space.append(pca_)
+        new_vector_space.append(pca_.T)
         return new_vector_space
