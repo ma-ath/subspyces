@@ -3,7 +3,7 @@ from torch.utils.data import Dataset, DataLoader
 from itertools import groupby
 from typing import List
 
-from subspaces import VectorSpace
+from subspyces import VectorSpace
 from .abstract_generator import AbstractGenerator
 
 
@@ -50,7 +50,7 @@ class IdentityGenerator(AbstractGenerator):
             # Group labels
             group_list = [list(g) for _, g in groupby(sorted_labels)]
 
-            # Populate subspaces in minibatches
+            # Populate subspyces in minibatches
             i = 0
             for group in group_list:
                 label = group[0]

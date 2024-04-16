@@ -1,7 +1,7 @@
 from torch.utils.data import Dataset
 from typing import List
 
-from subspaces import VectorSpace
+from subspyces import VectorSpace
 
 
 class AbstractGenerator:

@@ -5,7 +5,7 @@ import warnings
 from typing import Union
 
 from .abstract_transform import AbstractTransform
-from subspaces import VectorSpace
+from subspyces import VectorSpace
 
 
 class IncrementalPCATransform(AbstractTransform):
@@ -32,7 +32,7 @@ class IncrementalPCATransform(AbstractTransform):
 
     def transform(self, vector_space: VectorSpace, *args, **kwargs) -> VectorSpace:
         if self.use_sklearn:
-            warnings.warn("sklearn calculates the PCA sligthly different then general subspaces. " +
+            warnings.warn("sklearn calculates the PCA sligthly different then general subspyces. " +
                           "Make sure you know what you are doing", UserWarning)
             ipca_ = self._ipca_transform.fit(vector_space._data).components_.copy().T
         else:

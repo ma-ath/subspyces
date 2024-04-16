@@ -4,9 +4,9 @@ import torchvision.transforms as T
 # from torchvision.datasets import FakeData
 from torchvision.datasets import MNIST
 
-from subspaces.transform import IncrementalPCATransform
-from subspaces.transform import PCATransform
-from subspaces.generators import IdentityGenerator
+from subspyces.transform import IncrementalPCATransform
+from subspyces.transform import PCATransform
+from subspyces.generators import IdentityGenerator
 
 
 # --- unittests

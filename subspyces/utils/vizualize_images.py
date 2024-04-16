@@ -2,7 +2,7 @@ from typing import List, Tuple, Union
 import numpy as np
 import matplotlib.pyplot as plt
 
-from subspaces import VectorSpace
+from subspyces import VectorSpace
 
 
 def vizualize_images(vector_space: VectorSpace,
@@ -54,8 +54,8 @@ if __name__ == '__main__':
     from torchvision import transforms as T
     from torchvision.datasets import MNIST
 
-    from subspaces.transform import PCATransform, IncrementalPCATransform
-    from subspaces.generators import IdentityGenerator
+    from subspyces.transform import PCATransform, IncrementalPCATransform
+    from subspyces.generators import IdentityGenerator
 
     dataset = MNIST("~/datasets", download=True, train=False,
                     transform=T.Compose([T.ToTensor(), torch.flatten]))

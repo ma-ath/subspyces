@@ -2,7 +2,7 @@ from typing import List
 from torch.utils.data import Dataset
 
 from .abstract_generator import AbstractGenerator
-from subspaces import VectorSpace
+from subspyces import VectorSpace
 
 
 class PcaGenerator(AbstractGenerator):

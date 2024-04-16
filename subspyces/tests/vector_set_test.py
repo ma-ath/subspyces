@@ -1,10 +1,10 @@
 import unittest
 
-from subspaces import VectorSpace, VectorSet
+from subspyces import VectorSpace, VectorSet
 
 
 # --- unittests
-class TestSubspaces(unittest.TestCase):
+class Testsubspyces(unittest.TestCase):
     def setUp(self):
         self.dim = 32
         self.test_set = VectorSet([VectorSpace(dim=self.dim, label="A"),

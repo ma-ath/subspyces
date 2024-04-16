@@ -1,4 +1,4 @@
-from subspaces import VectorSpace
+from subspyces import VectorSpace
 
 
 class AbstractTransform:

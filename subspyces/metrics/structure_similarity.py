@@ -2,7 +2,7 @@ import torch
 from torch import linalg
 from torch.nn import functional as F
 
-from subspaces import VectorSpace
+from subspyces import VectorSpace
 
 
 def structure_similarity(A: VectorSpace, B: VectorSpace) -> float:

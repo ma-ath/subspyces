@@ -4,9 +4,9 @@ import torchvision.transforms as T
 # from torchvision.datasets import FakeData
 from torchvision.datasets import MNIST
 
-from subspaces.metrics import structure_similarity
-from subspaces.generators import IdentityGenerator
-from subspaces.transform import PCATransform
+from subspyces.metrics import structure_similarity
+from subspyces.generators import IdentityGenerator
+from subspyces.transform import PCATransform
 
 
 # --- unittests

@@ -4,7 +4,7 @@ import torchvision.transforms as T
 from torchvision.datasets import FakeData
 # from torchvision.datasets import MNIST
 
-from subspaces.generators import IdentityGenerator
+from subspyces.generators import IdentityGenerator
 
 
 # --- unittests

@@ -4,7 +4,7 @@ from sklearn.decomposition import PCA
 import warnings
 
 from .abstract_transform import AbstractTransform
-from subspaces import VectorSpace
+from subspyces import VectorSpace
 
 
 class PCATransform(AbstractTransform):
@@ -25,7 +25,7 @@ class PCATransform(AbstractTransform):
 
     def transform(self, vector_space: VectorSpace, *args, **kwargs) -> VectorSpace:
         if self.use_sklearn:
-            warnings.warn("sklearn calculates the PCA sligthly different then general subspaces. " +
+            warnings.warn("sklearn calculates the PCA sligthly different then general subspyces. " +
                           "Make sure you know what you are doing", UserWarning)
             pca_ = self._pca_transform.fit(vector_space._data).components_.copy().T
         else:
