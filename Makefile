@@ -9,4 +9,4 @@ test:
 	@python3 -m unittest discover -v -s subspyces/tests -p '*_test.py'
 
 clean:
-	@rm -rf build dist *.egg-info __pycache__
+	@rm -rf build dist *.egg-info __pycache__ .pytest_cache
