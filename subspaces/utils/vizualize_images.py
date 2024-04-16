@@ -54,7 +54,7 @@ if __name__ == '__main__':
     from torchvision import transforms as T
     from torchvision.datasets import MNIST
 
-    from subspaces.transform import PCATransform
+    from subspaces.transform import PCATransform, IncrementalPCATransform
     from subspaces.generators import IdentityGenerator
 
     dataset = MNIST("~/datasets", download=True, train=False,
@@ -63,9 +63,16 @@ if __name__ == '__main__':
 
     vector_spaces = generator.generate(dataset, batch_size=32)
 
-    pca_transform = PCATransform(n_components=10)
+    use_sklearn = True
+    label = 0
+    pca_transform = PCATransform(n_components=10, use_sklearn=use_sklearn)
+    ipca_transform = IncrementalPCATransform(n_components=10, use_sklearn=use_sklearn,
+                                             batch_size=32)
 
-    pca_vector_space = pca_transform.transform(vector_spaces[0])
+    pca_vector_space = pca_transform.transform(vector_spaces[label])
+    ipca_vector_space = ipca_transform.transform(vector_spaces[label])
 
-    # vizualize_images(pca_vector_space, 1, image_shape=[28, 28])
     vizualize_images(pca_vector_space, slice(0, 9), image_shape=[28, 28])
+    vizualize_images(ipca_vector_space, slice(0, 9), image_shape=[28, 28])
+
+    print(torch.abs(torch.abs(pca_vector_space._data) - torch.abs(ipca_vector_space._data)).mean())

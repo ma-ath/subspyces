@@ -23,6 +23,12 @@
             "module": "subspaces.tests.pca_transform_test"
         },
         {
+            "name": "Python Debugger: Module ipca_transform_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspaces.tests.ipca_transform_test"
+        },
+        {
             "name": "Python Debugger: Module structure_similarity_test",
             "type": "debugpy",
             "request": "launch",
