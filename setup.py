@@ -24,9 +24,13 @@ setup(
     ],
     keywords=['python', 'subspyces', 'pytorch'],
     classifiers=[
-        "Development Status :: 1 - Planing",
-        "Intended Audience :: Researchers",
-        "Programming Language :: Python :: 3",
-        "Operating System :: Not Specified",
+        "Development Status :: 1 - Planning",
+        "Intended Audience :: Education",
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: English",
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python :: 3.10",
+        "Topic :: Scientific/Engineering :: Image Recognition",
+        "Typing :: Typed"
     ]
 )
