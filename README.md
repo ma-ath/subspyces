@@ -1,8 +1,8 @@
 # Subspyces🌶️ - Subspaces in Python!
 
-<div style="text-align:center;">
+<p align="center">
   <img src="docs/logo.png" alt="Alt text" width="100">
-</div>
+</p>
 
 ## Why subspyces?
 
