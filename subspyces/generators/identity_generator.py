@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import Dataset, DataLoader
 from itertools import groupby
-from typing import List
+from typing import Dict, Any
 
 from subspyces import VectorSpace
 from .abstract_generator import AbstractGenerator
@@ -18,7 +18,8 @@ class IdentityGenerator(AbstractGenerator):
     def __str__(self) -> str:
         return "IdentityGenerator"
 
-    def generate(self, dataset: Dataset, batch_size: int = 32, *args, **kwargs) -> List[VectorSpace]:
+    def generate(self, dataset: Dataset,
+                 batch_size: int = 32, *args, **kwargs) -> Dict[Any, VectorSpace]:
         """
         Populates VectorSpace with vectors.
         If label does not exists in label list, generate it

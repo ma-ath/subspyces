@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, Any
 from torch.utils.data import Dataset
 
 from .abstract_generator import AbstractGenerator
@@ -17,5 +17,5 @@ class PcaGenerator(AbstractGenerator):
     def __str__(self) -> str:
         raise (NotImplementedError)
 
-    def generate(self, dataset: Dataset, *args, **kwargs) -> List[VectorSpace]:
+    def generate(self, dataset: Dataset, *args, **kwargs) -> Dict[Any, VectorSpace]:
         raise (NotImplementedError)
