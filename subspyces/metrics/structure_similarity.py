@@ -3,7 +3,7 @@ from typing import Union
 import numpy as np
 
 from subspyces import VectorSpace
-from .canonical_angles import canonical_angles
+from .cosine_canonical_angles import cosine_canonical_angles
 
 
 def structure_similarity(A: Union[torch.Tensor, np.ndarray, VectorSpace],
@@ -14,5 +14,5 @@ def structure_similarity(A: Union[torch.Tensor, np.ndarray, VectorSpace],
     subspaces :math:`\mathcal{A}` and :math:`\mathcal{B}`. Canonical angles
     are calculated using the SVD of the similarity matrix.
     """
-    ca = canonical_angles(A, B)
+    ca = cosine_canonical_angles(A, B)
     return torch.mean(torch.square(ca))

@@ -47,7 +47,6 @@ class TestMetricsCosineSimilarity(unittest.TestCase):
         _ = cosine_similarity(np.random.rand(2, 2), np.random.rand(2, 2))
         _ = cosine_similarity(self.subspaceA, self.subspaceB)
         _ = cosine_similarity(torch.rand(2), torch.rand(2, 2))
-        pass
 
     def test_calculation_is_correct(self):
         cs = cosine_similarity(self.A, self.B)

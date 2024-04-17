@@ -9,7 +9,7 @@ from subspyces import VectorSpace
 def cosine_similarity(x: Union[torch.Tensor, np.ndarray, VectorSpace],
                       y: Union[torch.Tensor, np.ndarray, VectorSpace]) -> torch.Tensor:
     r"""
-    Returns the cosine similarity between basis vectors of subspaces
+    Returns a matrix of cosine similarities between the basis vectors of subspaces
     :math:`cs = \frac{(\phi_i,\psi_j)}{\|\phi_i\|\|\psi_j\|}`
     """
     # NOTE: These many checks can slow down computation. Maybe there is a better way to
