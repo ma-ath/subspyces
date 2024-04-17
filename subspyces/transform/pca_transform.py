@@ -18,7 +18,7 @@ class PCATransform(AbstractTransform):
             self._pca_transform = PCA(n_components=self.n_components,
                                       copy=False,
                                       **kwargs)
-        self._etol = 1e-6
+        self._etol = 1e-3
 
     def __str__(self) -> str:
         return "PCATransform"
