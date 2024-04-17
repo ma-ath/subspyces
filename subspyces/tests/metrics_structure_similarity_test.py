@@ -1,8 +1,8 @@
 import unittest
 import torch
 import torchvision.transforms as T
-# from torchvision.datasets import FakeData
 from torchvision.datasets import MNIST
+from torch.utils.data import Subset
 
 from subspyces.metrics import structure_similarity
 from subspyces.generators import IdentityGenerator
@@ -12,10 +12,9 @@ from subspyces.transform import PCATransform
 # --- unittests
 class TestPCATransform(unittest.TestCase):
     def setUp(self):
-        # dataset = FakeData(64, [32, 32], 2,
-        #                    transform=T.Compose([T.ToTensor(), torch.flatten]))
-        dataset = MNIST("~/datasets", download=True, train=False,
-                        transform=T.Compose([T.ToTensor(), torch.flatten]))
+        dataset = Subset(MNIST("~/datasets", download=True, train=False,
+                               transform=T.Compose([T.ToTensor(), torch.flatten])),
+                         indices=range(1000))
         generator = IdentityGenerator()
         vector_spaces = generator.generate(dataset, batch_size=32)
         pca_transform = PCATransform(n_components=10)

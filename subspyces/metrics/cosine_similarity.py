@@ -16,7 +16,7 @@ def cosine_similarity(x: Union[torch.Tensor, np.ndarray, VectorSpace],
     # implement this generically (maybe just ignore the checks?).
     if (not isinstance(x, (torch.Tensor, np.ndarray, VectorSpace)) or
             not isinstance(y, (torch.Tensor, np.ndarray, VectorSpace))):
-        raise (TypeError("Invalid input type!"))
+        raise (TypeError(f"Invalid input type {type(x)} or {type(y)}"))
     if isinstance(x, np.ndarray):
         x = torch.from_numpy(x)
     elif isinstance(x, VectorSpace):

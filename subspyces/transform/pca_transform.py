@@ -3,7 +3,7 @@ from torch import linalg
 from sklearn.decomposition import PCA
 import warnings
 
-from . import AbstractTransform
+from .abstract_transform import AbstractTransform
 from subspyces import VectorSpace
 
 

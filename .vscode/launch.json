@@ -17,6 +17,12 @@
             "module": "subspyces.tests.generator_identity_generator_test"
         },
         {
+            "name": "Python Debugger: methods_subspace_method_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspyces.tests.methods_subspace_method_test"
+        },
+        {
             "name": "Python Debugger: metrics_cosine_canonical_angles_test",
             "type": "debugpy",
             "request": "launch",

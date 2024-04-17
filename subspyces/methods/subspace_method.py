@@ -1,13 +1,12 @@
 import torch
 from torch.utils.data import Dataset, DataLoader
-from typing import Union
+from typing import Union, Any
 import numpy as np
 
-from subspyces import VectorSpace
 from subspyces.generators import IdentityGenerator
 from subspyces.transform import PCATransform
 from subspyces.metrics import cosine_similarity
-from . import AbstractMethod
+from .abstract_method import AbstractMethod
 
 
 class SubspaceMethod(AbstractMethod):
@@ -38,21 +37,21 @@ class SubspaceMethod(AbstractMethod):
         """
         loader = DataLoader(eval_data, batch_size=batch_size)
 
-        correct_class = []
         classification_ratio = 0
 
         for n_batch, (batch_data, batch_label) in enumerate(loader):
+            correct_class = []
             predicted_labels = self.classify(batch_data)
 
             for l1, l2 in zip(predicted_labels, batch_label):
                 correct_class.append(l1 == l2)
 
-            classification_ratio += correct_class.count(True) / len(correct_class)
-        classification_ratio / n_batch
+            classification_ratio += correct_class.count(True) / len(batch_data)
+        classification_ratio /= (n_batch+1)
 
-        return correct_class, classification_ratio
+        return classification_ratio
 
-    def classify(self, vectors: Union[torch.Tensor, np.ndarray]):
+    def classify(self, vectors: Union[torch.Tensor, np.ndarray]) -> Any:
         """
         Classifies a tensor in one of the subspaces using the mean squared of canonical angles
         """
@@ -60,14 +59,17 @@ class SubspaceMethod(AbstractMethod):
             vectors = torch.from_numpy(vectors)
 
         # Classify all vectors by cossine similarity
-        max_likelihood = []
-        cs = []
+        max_likelihood = torch.empty((0, len(vectors)))
 
-        for subspace in self._model_parameters:
+        # NOTE: It is faster if you calculate the cosine_similarity of all
+        # subspaces in one go. This is not the best way, but it's here
+        # iteratively for simplicity.
+        for subspace in self._model_parameters.values():
             cs = cosine_similarity(vectors, subspace)
-            mscca = torch.mean(torch.square(cs), dim=1)
-            for i in mscca:
-                if foo[i] > cs[i]: cs[i] = foo[i]; max_likelihood[i] = subspace.label
+            mscs = torch.mean(torch.square(cs), dim=1).unsqueeze(0)
+            max_likelihood = torch.cat([max_likelihood, mscs], 0)
+        max_likelihood = torch.argmax(max_likelihood, dim=0)
+        max_likelihood = [list(self._model_parameters)[i] for i in max_likelihood]
         return max_likelihood
 
     # def cossine_similarity(self, vector: torch.Tensor, subspace: VectorSpace):

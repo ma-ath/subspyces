@@ -4,7 +4,7 @@ from typing import Union
 import numpy as np
 
 from subspyces import VectorSpace
-from . import cosine_similarity
+from .cosine_similarity import cosine_similarity
 
 
 def cosine_canonical_angles(x: Union[torch.Tensor, np.ndarray, VectorSpace],
