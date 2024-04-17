@@ -1,7 +1,7 @@
 from typing import Dict, Any
 from torch.utils.data import Dataset
 
-from .abstract_generator import AbstractGenerator
+from . import AbstractGenerator
 from subspyces import VectorSpace
 
 

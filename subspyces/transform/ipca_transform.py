@@ -4,7 +4,7 @@ from sklearn.decomposition import IncrementalPCA
 import warnings
 from typing import Union
 
-from .abstract_transform import AbstractTransform
+from . import AbstractTransform
 from subspyces import VectorSpace
 
 

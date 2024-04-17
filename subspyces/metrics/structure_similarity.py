@@ -3,7 +3,7 @@ from typing import Union
 import numpy as np
 
 from subspyces import VectorSpace
-from .cosine_canonical_angles import cosine_canonical_angles
+from . import cosine_canonical_angles
 
 
 def structure_similarity(A: Union[torch.Tensor, np.ndarray, VectorSpace],

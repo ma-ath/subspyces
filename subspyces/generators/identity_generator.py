@@ -4,7 +4,7 @@ from itertools import groupby
 from typing import Dict, Any
 
 from subspyces import VectorSpace
-from .abstract_generator import AbstractGenerator
+from . import AbstractGenerator
 
 
 class IdentityGenerator(AbstractGenerator):
