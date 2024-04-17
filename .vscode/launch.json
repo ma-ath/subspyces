@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python Debugger: metrics_cosine_similarity_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspyces.tests.metrics_cosine_similarity_test"
+        },
+        {
             "name": "Python Debugger: Module vector_space_test",
             "type": "debugpy",
             "request": "launch",

@@ -35,13 +35,14 @@ class VectorSpace:
             raise (IndexError("Index i out of bound"))
         return self._data[i]
 
-    def to(self, device: Union[torch.device, str]) -> None:
+    def to(self, device: Union[torch.device, str]) -> "VectorSpace":
         """
         Sends vector space to specific device
         """
         self._data.to(device=device)
+        return self
 
-    def append(self, vector: Union[torch.Tensor, np.ndarray]) -> None:
+    def append(self, vector: Union[torch.Tensor, np.ndarray]) -> "VectorSpace":
         """
         Appends vectors to the basis vectors of vector space
         """
@@ -57,6 +58,7 @@ class VectorSpace:
         vector = vector.type(self.dtype)
         self.n = self.n + vector.shape[0]
         self._data = torch.cat([self._data, vector], dim=0)
+        return self
 
     def __lt__(self, other) -> int:
         return self.n < other.n

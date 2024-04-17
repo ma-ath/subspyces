@@ -1,5 +1,5 @@
 import torch
-from torch import functional as F
+from torch.nn import functional as F
 from typing import Union
 import numpy as np
 
@@ -12,6 +12,8 @@ def cosine_similarity(x: Union[torch.Tensor, np.ndarray, VectorSpace],
     Returns the cosine similarity between basis vectors of subspaces
     :math:`cs = \frac{(\phi_i,\psi_j)}{\|\phi_i\|\|\psi_j\|}`
     """
+    # NOTE: These many checks can slow down computation. Maybe there is a better way to
+    # implement this generically (maybe just ignore the checks?).
     if (not isinstance(x, (torch.Tensor, np.ndarray, VectorSpace)) or
             not isinstance(y, (torch.Tensor, np.ndarray, VectorSpace))):
         raise (TypeError("Invalid input type!"))
@@ -26,10 +28,15 @@ def cosine_similarity(x: Union[torch.Tensor, np.ndarray, VectorSpace],
     if x.dim() > 2 or y.dim() > 2:
         raise (RuntimeError(("input cannot have more then 2 dimensions, "
                             f"but is has {x.dim()} and {y.dim()} dimensions.")))
+    if x.dim() == 1:
+        x.unsqueeze_(0)
+    if y.dim() == 1:
+        y.unsqueeze_(0)
 
     x = x.type(torch.FloatTensor)
     y = y.type(torch.FloatTensor)
 
     cosine_similarity = torch.matmul(F.normalize(x),
                                      F.normalize(y).H)
+    cosine_similarity.squeeze_()
     return cosine_similarity
