@@ -5,6 +5,7 @@ from typing import Union
 import numpy as np
 
 from subspyces import VectorSpace
+from .canonical_angles import canonical_angles
 
 
 def structure_similarity(A: Union[torch.Tensor, np.ndarray, VectorSpace],
@@ -15,12 +16,5 @@ def structure_similarity(A: Union[torch.Tensor, np.ndarray, VectorSpace],
     subspaces :math:`\mathcal{A}` and :math:`\mathcal{B}`. Canonical angles
     are calculated using the SVD of the similarity matrix.
     """
-    if A.dim != B.dim:
-        raise (AssertionError(f"VectorSpaces have different dimension! {A.dim} and {B.dim}"))
-
-    similarity_matrix = torch.matmul(F.normalize(A._data),
-                                     F.normalize(B._data).H)
-
-    canonical_angles = linalg.svdvals(similarity_matrix)
-
-    return float(torch.mean(torch.square(canonical_angles)))
+    ca = canonical_angles(A, B)
+    return float(torch.mean(torch.square(ca)))

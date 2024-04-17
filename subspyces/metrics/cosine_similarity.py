@@ -1,5 +1,4 @@
 import torch
-from torch import linalg
 from torch import functional as F
 from typing import Union
 import numpy as np
@@ -13,29 +12,24 @@ def cosine_similarity(x: Union[torch.Tensor, np.ndarray, VectorSpace],
     Returns the cosine similarity between basis vectors of subspaces
     :math:`cs = \frac{(\phi_i,\psi_j)}{\|\phi_i\|\|\psi_j\|}`
     """
-    if vector.dim() == 1:
-        vector.unsqueeze_(0)
-    assert(vector.shape[1] == subspace.vector_size)
-    vector = vector.type(torch.FloatTensor)
+    if (not isinstance(x, (torch.Tensor, np.ndarray, VectorSpace)) or
+            not isinstance(y, (torch.Tensor, np.ndarray, VectorSpace))):
+        raise (TypeError("Invalid input type!"))
+    if isinstance(x, np.ndarray):
+        x = torch.from_numpy(x)
+    elif isinstance(x, VectorSpace):
+        x = x._data
+    if isinstance(y, np.ndarray):
+        y = torch.from_numpy(y)
+    elif isinstance(y, VectorSpace):
+        y = y._data
+    if x.dim() > 2 or y.dim() > 2:
+        raise (RuntimeError(("input cannot have more then 2 dimensions, "
+                            f"but is has {x.dim()} and {y.dim()} dimensions.")))
 
-    S = torch.sum(
-            torch.div(
-                torch.mm(vector, subspace.A.t())**2,
-                torch.matmul(
-                    torch.sqrt(
-                        torch.diag(
-                            torch.mm(vector, vector.t()
-                            )
-                        )
-                    ).unsqueeze(0).t(),
-                    torch.sqrt(
-                        torch.diag(
-                            torch.mm(subspace.A, subspace.A.t())
-                        )
-                    ).unsqueeze(0)
-                )
-            ), dim=1
-        )
-    print(S)
-    return S
-    raise (NotImplementedError)
+    x = x.type(torch.FloatTensor)
+    y = y.type(torch.FloatTensor)
+
+    cosine_similarity = torch.matmul(F.normalize(x),
+                                     F.normalize(y).H)
+    return cosine_similarity
