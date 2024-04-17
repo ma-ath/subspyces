@@ -1,5 +1,6 @@
 import torch
 from torch import linalg
+from torch import functional as F
 from typing import Union
 import numpy as np
 
@@ -8,9 +9,9 @@ from subspyces import VectorSpace
 
 def cosine_similarity(x: Union[torch.Tensor, np.ndarray, VectorSpace],
                       y: Union[torch.Tensor, np.ndarray, VectorSpace]) -> torch.Tensor:
-    raise (NotImplementedError)
-    """
-    Returns S = \sum_{i=0}^{r-1} \frac{(x,\phi_i)^2}{\|x\|\|\phi_i\|}
+    r"""
+    Returns the cosine similarity between basis vectors of subspaces
+    :math:`cs = \frac{(\phi_i,\psi_j)}{\|\phi_i\|\|\psi_j\|}`
     """
     if vector.dim() == 1:
         vector.unsqueeze_(0)
@@ -37,3 +38,4 @@ def cosine_similarity(x: Union[torch.Tensor, np.ndarray, VectorSpace],
         )
     print(S)
     return S
+    raise (NotImplementedError)

@@ -6,9 +6,10 @@ from subspyces import VectorSpace
 
 class AbstractGenerator:
     """
-    Abstract base class for subspace generators
+    Abstract base class for vector space generators
 
-    A subspace generator receives a torch dataset and outputs a dictionary of VectorSpace.
+    A generator receives a torch Dataset and outputs a dictionary of VectorSpace.
+    It is the class resposible for interfacing torch with VectorSpace.
     """
     def __init__(self):
         raise (NotImplementedError)

@@ -9,7 +9,9 @@ from .abstract_generator import AbstractGenerator
 
 class IdentityGenerator(AbstractGenerator):
     """
-    Takes a torch dataset and organizes it into many VectorSpace, one for each label
+    Takes a torch dataset and organizes it into many VectorSpace, one for each label.
+    It's called identity because it doesn't modify the input in any way, just organizing
+    it in vector spaces.
     """
 
     def __init__(self):
@@ -42,7 +44,7 @@ class IdentityGenerator(AbstractGenerator):
             sorted_tensor = torch.tensor([i for _, i in lt])
 
             # If labels are torch.Tensor(.), transform then to integers
-            # torch.Tensors <especifically> are giving problems on dict indexing.
+            # torch.Tensors *especifically* are giving problems on dict indexing.
             if type(lt[0][0]) is torch.Tensor:
                 sorted_labels = [int(i) for i, _ in lt]
             else:
