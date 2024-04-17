@@ -5,10 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python Debugger: metrics_cosine_similarity_test",
+            "name": "Python Debugger: core_vector_space_test",
             "type": "debugpy",
             "request": "launch",
-            "module": "subspyces.tests.metrics_cosine_similarity_test"
+            "module": "subspyces.tests.core_vector_space_test"
+        },
+        {
+            "name": "Python Debugger: generator_identity_generator_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspyces.tests.generator_identity_generator_test"
         },
         {
             "name": "Python Debugger: metrics_cosine_canonical_angles_test",
@@ -17,46 +23,28 @@
             "module": "subspyces.tests.metrics_cosine_canonical_angles_test"
         },
         {
-            "name": "Python Debugger: Module vector_space_test",
+            "name": "Python Debugger: metrics_cosine_similarity_test",
             "type": "debugpy",
             "request": "launch",
-            "module": "subspyces.tests.vector_space_test"
+            "module": "subspyces.tests.metrics_cosine_similarity_test"
         },
         {
-            "name": "Python Debugger: Module vector_set_test",
+            "name": "Python Debugger: metrics_structure_similarity_test",
             "type": "debugpy",
             "request": "launch",
-            "module": "subspyces.tests.vector_set_test"
+            "module": "subspyces.tests.metrics_structure_similarity_test"
         },
         {
-            "name": "Python Debugger: Module pca_transform_test",
+            "name": "Python Debugger: transform_ipca_transform_test",
             "type": "debugpy",
             "request": "launch",
-            "module": "subspyces.tests.pca_transform_test"
+            "module": "subspyces.tests.transform_ipca_transform_test"
         },
         {
-            "name": "Python Debugger: Module ipca_transform_test",
+            "name": "Python Debugger: transform_pca_transform_test",
             "type": "debugpy",
             "request": "launch",
-            "module": "subspyces.tests.ipca_transform_test"
+            "module": "subspyces.tests.transform_pca_transform_test"
         },
-        {
-            "name": "Python Debugger: Module structure_similarity_test",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "subspyces.tests.structure_similarity_test"
-        },
-        {
-            "name": "Python Debugger: Module identity_generator_test",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "subspyces.tests.identity_generator_test"
-        },
-        {
-            "name": "Python Debugger: Module vizualize_images",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "subspyces.utils.vizualize_images"
-        }
-    ]
+   ]
 }

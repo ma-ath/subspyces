@@ -54,6 +54,7 @@ class TestMetricsCanonicalAngles(unittest.TestCase):
         _ = cosine_canonical_angles(torch.rand(2), torch.rand(2, 2))
 
     def test_calculation_is_correct(self):
+        # TODO: Criar testes para ca
         for use_svd in [True]:
             _ = cosine_canonical_angles(self.A, self.B, use_svd=use_svd)
             # self.assertTrue(torch.allclose(ca, self.res1))
