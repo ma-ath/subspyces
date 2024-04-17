@@ -29,7 +29,7 @@ class VectorSpace:
         returns the i'th base of vector space
         """
         if type(i) is slice:
-            if i.stop >= self.n or i.start < 0:
+            if i.stop > self.n or i.start < 0:
                 raise (IndexError("Index i out of bound"))
         elif i >= self.n and i < 0:
             raise (IndexError("Index i out of bound"))

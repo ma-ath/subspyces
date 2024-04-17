@@ -47,9 +47,9 @@ class TestVectorSpace(unittest.TestCase):
         subspace.append(vector_1)
         self.assertTrue(torch.allclose(subspace[0], vector_1))
 
-        # vector_10 = torch.rand(10, self.dim)
-        # subspace.append(vector_10)
-        # self.assertTrue(torch.allclose(subspace[1:10], vector_10[10]))
+        vector_10 = torch.rand(10, self.dim)
+        subspace.append(vector_10)
+        self.assertTrue(torch.allclose(subspace[1:11], vector_10))
 
     def test_lt(self):
         vspace1 = VectorSpace(dim=self.dim)
