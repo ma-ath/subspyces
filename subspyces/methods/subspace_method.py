@@ -68,7 +68,9 @@ class SubspaceMethod(AbstractMethod):
             cs = cosine_similarity(vectors, subspace)
             mscs = torch.mean(torch.square(cs), dim=1).unsqueeze(0)
             max_likelihood = torch.cat([max_likelihood, mscs], 0)
+        # See which subspace index the vector is closer to
         max_likelihood = torch.argmax(max_likelihood, dim=0)
+        # Transform subspace index to labels
         max_likelihood = [list(self._model_parameters)[i] for i in max_likelihood]
         return max_likelihood
 
