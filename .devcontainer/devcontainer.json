@@ -19,7 +19,7 @@
   	"mounts": [
     	"source=${localEnv:HOME}${localEnv:USERPROFILE}/.bash_history,target=/home/vscode/.bash_history,type=bind",
 		// Mount the dataset folder in Local Machine
-		"source=/home/mlima/Datasets,target=/home/vscode/datasets,type=bind"
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/Datasets,target=/home/vscode/datasets,type=bind"
 	],
 	"customizations": {
 		"vscode": {
