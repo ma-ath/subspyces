@@ -33,7 +33,7 @@ class PCATransform(AbstractTransform):
             auto_correlation_matrix /= (vector_space.n-1)
             eigenvalues, eigenvectors = linalg.eig(auto_correlation_matrix)
             #  Eigenvalues are supposed to be positive reals.
-            # This condtion may fail only if there are numerical errors. 
+            # This condtion may fail only if there are numerical errors.
             # We can ignore the torch warning here about casting complex -> real
             if torch.max(torch.imag(eigenvalues)) > self._etol:
                 raise (AssertionError(
