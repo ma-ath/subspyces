@@ -4,6 +4,10 @@
   <img src="docs/logo.png" alt="Alt text" width="100">
 </p>
 
+## Instalation
+
+`pip install subspyces`
+
 ## Why subspyces?
 
 Pytorch is a very powerfull framework for developing ML algorithms, but implementing subspace methods in torch can be a bit repetitive when we don't have a starting point. For this, we developed this simple library which encapsulates some useful code that can be re-used and easily integrated with other torch codebases.
