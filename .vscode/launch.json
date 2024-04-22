@@ -1,0 +1,56 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: core_vector_space_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspyces.tests.core_vector_space_test"
+        },
+        {
+            "name": "Python Debugger: generator_identity_generator_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspyces.tests.generator_identity_generator_test"
+        },
+        {
+            "name": "Python Debugger: methods_subspace_method_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspyces.tests.methods_subspace_method_test"
+        },
+        {
+            "name": "Python Debugger: metrics_cosine_canonical_angles_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspyces.tests.metrics_cosine_canonical_angles_test"
+        },
+        {
+            "name": "Python Debugger: metrics_cosine_similarity_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspyces.tests.metrics_cosine_similarity_test"
+        },
+        {
+            "name": "Python Debugger: metrics_structure_similarity_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspyces.tests.metrics_structure_similarity_test"
+        },
+        {
+            "name": "Python Debugger: transform_ipca_transform_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspyces.tests.transform_ipca_transform_test"
+        },
+        {
+            "name": "Python Debugger: transform_pca_transform_test",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "subspyces.tests.transform_pca_transform_test"
+        },
+   ]
+}

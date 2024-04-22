@@ -1,0 +1,41 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/python
+{
+	"name": "container",
+	"build": {
+		"dockerfile":  "Dockerfile",
+		"args": {
+			"REV": "23.10-py3"
+		}
+	},
+	"runArgs": [
+	  "--gpus=all",
+	  "--network=host",
+	  "--env=DISPLAY=${localEnv:DISPLAY}",
+	  "--volume=/tmp/.X11-unix:/tmp/.X11-unix"
+	],
+	"workspaceMount": "source=${localWorkspaceFolder},target=/${localWorkspaceFolderBasename},type=bind",
+  	"workspaceFolder": "/${localWorkspaceFolderBasename}",
+  	"mounts": [
+    	"source=${localEnv:HOME}${localEnv:USERPROFILE}/.bash_history,target=/home/vscode/.bash_history,type=bind",
+		// Mount the dataset folder in Local Machine
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/Datasets,target=/home/vscode/datasets,type=bind"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.flake8",
+				"ms-azuretools.vscode-docker",
+				"ms-toolsai.jupyter-keymap",
+				"ms-toolsai.jupyter",
+				"ms-toolsai.vscode-jupyter-cell-tags",
+				"ms-toolsai.jupyter-renderers",
+				"ms-toolsai.vscode-jupyter-slideshow",
+				"ms-python.vscode-pylance",
+				"ms-python.python",
+				"ms-python.debugpy",
+				"ms-toolsai.tensorboard"
+			]
+		}
+	}
+}

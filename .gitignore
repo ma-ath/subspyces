@@ -1,8 +1,3 @@
-# My gitignore
-.devcontainer
-compose-dev.yaml
-datasets
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
