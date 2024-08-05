@@ -2,7 +2,7 @@ from typing import Dict, Any
 from torch.utils.data import Dataset
 
 from . import AbstractGenerator
-from subspyces import VectorSpace
+from subspyces.core import VectorSpace
 
 
 class IPCAGenerator(AbstractGenerator):

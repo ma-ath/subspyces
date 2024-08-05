@@ -5,7 +5,7 @@ import warnings
 from typing import Union
 
 from .abstract_transform import AbstractTransform
-from subspyces import VectorSpace
+from subspyces.core import VectorSpace
 
 
 class IncrementalPCATransform(AbstractTransform):

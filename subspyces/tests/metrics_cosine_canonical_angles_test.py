@@ -4,7 +4,7 @@ import torch
 import math
 
 from subspyces.metrics import cosine_canonical_angles
-from subspyces import VectorSpace
+from subspyces.core import VectorSpace
 
 
 # --- unittests

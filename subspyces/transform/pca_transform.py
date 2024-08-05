@@ -4,7 +4,7 @@ from sklearn.decomposition import PCA
 import warnings
 
 from .abstract_transform import AbstractTransform
-from subspyces import VectorSpace
+from subspyces.core import VectorSpace
 
 
 class PCATransform(AbstractTransform):

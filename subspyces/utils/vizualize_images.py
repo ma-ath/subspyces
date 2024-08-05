@@ -2,7 +2,7 @@ from typing import List, Tuple, Union
 import numpy as np
 import matplotlib.pyplot as plt
 
-from subspyces import VectorSpace
+from subspyces.core import VectorSpace
 
 
 def vizualize_images(vector_space: VectorSpace,
