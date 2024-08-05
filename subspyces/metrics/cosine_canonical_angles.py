@@ -3,7 +3,7 @@ from torch import linalg
 from typing import Union
 import numpy as np
 
-from subspyces import VectorSpace
+from subspyces.core import VectorSpace
 from .cosine_similarity import cosine_similarity
 
 

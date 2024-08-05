@@ -3,7 +3,7 @@ from torch.nn import functional as F
 from typing import Union
 import numpy as np
 
-from subspyces import VectorSpace
+from subspyces.core import VectorSpace
 
 
 def cosine_similarity(x: Union[torch.Tensor, np.ndarray, VectorSpace],

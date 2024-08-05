@@ -2,7 +2,7 @@ import torch
 import numpy as np
 import unittest
 
-from subspyces import VectorSpace
+from subspyces.core import VectorSpace
 
 
 # --- unittests

@@ -3,7 +3,7 @@ from torch.utils.data import Dataset, DataLoader
 from itertools import groupby
 from typing import Dict, Any
 
-from subspyces import VectorSpace
+from subspyces.core import VectorSpace
 from . import AbstractGenerator
 
 
