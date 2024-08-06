@@ -18,8 +18,13 @@ class TestPCATransform(unittest.TestCase):
 
         self.vector_spaces = generator.generate(dataset, batch_size=32)
 
-    def test_transform(self):
+    def test_transform_n_components(self):
         pca_transform = PCATransform(n_components=10)
+        for vector_space in self.vector_spaces.values():
+            _ = pca_transform.transform(vector_space)
+
+    def test_transform_min_energy(self):
+        pca_transform = PCATransform(min_energy=0.95)
         for vector_space in self.vector_spaces.values():
             _ = pca_transform.transform(vector_space)
 
