@@ -1,4 +1,5 @@
-from torch.utils.data import Dataset
+import torch
+from collections.abc import Iterable
 from typing import Dict, Any
 
 from subspyces.core import VectorSpace
@@ -17,5 +18,6 @@ class AbstractGenerator:
     def __str__(self) -> str:
         raise (NotImplementedError)
 
-    def generate(self, dataset: Dataset, *args, **kwargs) -> Dict[Any, VectorSpace]:
+    def generate(self, dataset: Iterable[Any, torch.Tensor],
+                 *args, **kwargs) -> Dict[Any, VectorSpace]:
         raise (NotImplementedError)

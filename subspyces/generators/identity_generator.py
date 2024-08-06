@@ -1,10 +1,12 @@
 import torch
-from torch.utils.data import Dataset, DataLoader
+from collections.abc import Iterable
 from itertools import groupby
 from typing import Dict, Any
 
 from subspyces.core import VectorSpace
 from . import AbstractGenerator
+
+from ._utils import batched_iterable
 
 
 class IdentityGenerator(AbstractGenerator):
@@ -20,16 +22,15 @@ class IdentityGenerator(AbstractGenerator):
     def __str__(self) -> str:
         return "IdentityGenerator"
 
-    def generate(self, dataset: Dataset,
+    def generate(self, dataset: Iterable[Any, torch.Tensor],
                  batch_size: int = 32, *args, **kwargs) -> Dict[Any, VectorSpace]:
         """
         Populates VectorSpace with vectors.
         If label does not exists in label list, generate it
         """
-        loader = DataLoader(dataset, batch_size=batch_size)
         v_space_list = dict()
 
-        for batch_data, batch_label in loader:
+        for batch_data, batch_label in batched_iterable(dataset, batch_size):
             # Format data
             if batch_data.dim() == 1:
                 batch_data.unsqueeze_(0)

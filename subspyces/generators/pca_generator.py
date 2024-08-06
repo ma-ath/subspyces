@@ -1,5 +1,6 @@
+import torch
 from typing import Dict, Any
-from torch.utils.data import Dataset
+from collections.abc import Iterable
 
 from . import AbstractGenerator
 from subspyces.core import VectorSpace
@@ -19,5 +20,6 @@ class IPCAGenerator(AbstractGenerator):
     def __str__(self) -> str:
         raise (NotImplementedError)
 
-    def generate(self, dataset: Dataset, *args, **kwargs) -> Dict[Any, VectorSpace]:
+    def generate(self, dataset: Iterable[Any, torch.Tensor],
+                 *args, **kwargs) -> Dict[Any, VectorSpace]:
         raise (NotImplementedError)
