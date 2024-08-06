@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.0.3'
+VERSION = '0.0.4'
 DESCRIPTION = 'subspyces - subspaces in python!'
 LONG_DESCRIPTION = ("Pytorch is a very powerfull framework for developing ML algorithms, "
                     "but implementing subspace methods in torch can be a bit repetitive "
@@ -18,12 +18,12 @@ setup(
     long_description=LONG_DESCRIPTION,
     packages=find_packages(),
     install_requires=[
-        "matplotlib==3.8.0",
-        "numpy==1.22.2",
-        "scikit_learn==1.2.0",
-        "setuptools==68.2.2",
-        "torch==2.1.0",
-        "torchvision==0.16.0"
+        "matplotlib>=3.8.0",
+        "numpy>=1.22.2",
+        "scikit_learn>=1.2.0",
+        "setuptools>=68.2.2",
+        "torch>=2.1.0",
+        "torchvision>=0.16.0"
     ],
     keywords=['python', 'subspyces', 'pytorch'],
     classifiers=[
