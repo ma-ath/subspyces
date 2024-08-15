@@ -57,19 +57,21 @@ class PCATransform(AbstractTransform):
                     "Eigenvalues of autocorrelation matrix are supposed to be real, "
                     f"but has imaginary part {torch.max(torch.imag(eigenvalues))}"))
 
-            # TODO: This filter is not working...
+            # BUG: This filter is not working...
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 eigenvalues = torch.real(eigenvalues)
                 eigenvectors = torch.real(eigenvectors)
 
-            sorted_indices = torch.argsort(eigenvalues, descending=True)
+            squared_eigenvalues = torch.square(eigenvalues)
+            sorted_indices = torch.argsort(squared_eigenvalues, descending=True)
+            squared_eigenvalues.sort(descending=True)
             if self.n_components is not None:
                 pca_ = eigenvectors[:, sorted_indices][:, :self.n_components]
             elif self.min_energy is not None:
-                energy = torch.sum(eigenvalues)
-                cumulative_energy = torch.cumsum(eigenvalues, dim=0) / energy
-                n_components = torch.sum(cumulative_energy <= self.min_energy)
+                cumulative_energy = torch.cumsum(squared_eigenvalues,
+                                                 dim=0) / torch.sum(squared_eigenvalues)
+                n_components = torch.sum(cumulative_energy <= self.min_energy) + 1
                 pca_ = eigenvectors[:, sorted_indices][:, :n_components]
             else:
                 raise RuntimeError("Unexpected error. This should not happen.")
