@@ -36,8 +36,13 @@ class PCATransform(AbstractTransform):
         return "PCATransform"
 
     def transform(self, vector_space: VectorSpace, *args, **kwargs) -> VectorSpace:
-        if self.use_sklearn:
-            warnings.warn("sklearn calculates the PCA sligthly different then general subspyces. " +
+        if vector_space.n < 2:
+            warnings.warn("The input VectorSpace only have one basis vector. Calculated 'PCA' is "
+                          "simply this basis vector normalized.", UserWarning)
+            pca_ = vector_space._data / torch.norm(vector_space._data)
+            pca_ = pca_.T
+        elif self.use_sklearn:
+            warnings.warn("sklearn calculates the PCA sligthly different then general subspyces. "
                           "Make sure you know what you are doing", UserWarning)
             pca_ = self._pca_transform.fit(vector_space._data).components_.copy().T
         else:
@@ -49,7 +54,7 @@ class PCATransform(AbstractTransform):
             # We can ignore the torch warning here about casting complex -> real
             if torch.max(torch.imag(eigenvalues)) > self._etol:
                 raise (AssertionError(
-                    "Eigenvalues of autocorrelation matrix are supposed to be real," +
+                    "Eigenvalues of autocorrelation matrix are supposed to be real, "
                     f"but has imaginary part {torch.max(torch.imag(eigenvalues))}"))
 
             # TODO: This filter is not working...
@@ -71,8 +76,8 @@ class PCATransform(AbstractTransform):
 
             # Check the eigenvectors for NaN. An NaN can show there was a numerical error
             if torch.isnan(pca_).any():
-                warnings.warn("A NaN was generated while calculating the eigenvectors." +
-                              "This may suggest a numerical error on calculation." +
+                warnings.warn("A NaN was generated while calculating the eigenvectors. "
+                              "This may suggest a numerical error on calculation. "
                               "Casting all NaN to 0.", RuntimeWarning)
 
                 pca_ = torch.nan_to_num(pca_)
