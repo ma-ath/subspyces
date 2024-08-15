@@ -23,6 +23,8 @@ def cosine_canonical_angles(x: Union[torch.Tensor, np.ndarray, VectorSpace],
         cs = cosine_similarity(x, y)
         if cs.dim() <= 1:
             return cs
-        return linalg.svdvals(cs)
+        cca = linalg.svdvals(cs)
+        cca.sort(descending=True)
+        return cca
     else:
         raise (NotImplementedError)

@@ -70,6 +70,11 @@ class TestMetricsCanonicalAngles(unittest.TestCase):
         B = VectorSpace(dim=16).append(torch.rand(16))
         _ = cosine_canonical_angles(A, B)
 
+    def test_cca_is_ordered(self):
+        cca = cosine_canonical_angles(self.A, self.B)
+        for i in range(1, len(cca)):
+            self.assertTrue(cca[i-1] >= cca[i])
+
 
 if __name__ == "__main__":
     unittest.main()
