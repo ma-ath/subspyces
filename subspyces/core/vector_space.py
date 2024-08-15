@@ -7,7 +7,7 @@ class VectorSpace:
     """
     Class that defines a simple vector space
     """
-    def __init__(self, dim: int, label: Any = None) -> None:
+    def __init__(self, *, dim: int, label: Any = None) -> None:
         """
         dim (int): dimension of vectors in space
         label (Any): A label for the vector space

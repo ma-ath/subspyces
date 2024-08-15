@@ -31,8 +31,8 @@ class TestMetricsCosineSimilarity(unittest.TestCase):
         self.res2 = torch.tensor(
             [1, 0, math.sqrt(2)/2]
         )
-        self.subspaceA = VectorSpace(4).append(self.A)
-        self.subspaceB = VectorSpace(4).append(self.B)
+        self.subspaceA = VectorSpace(dim=4).append(self.A)
+        self.subspaceB = VectorSpace(dim=4).append(self.B)
 
     def test_input_checks(self):
         with self.assertRaises(TypeError):

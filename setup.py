@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.0.4'
+VERSION = '0.0.5'
 DESCRIPTION = 'subspyces - subspaces in python!'
 LONG_DESCRIPTION = ("Pytorch is a very powerfull framework for developing ML algorithms, "
                     "but implementing subspace methods in torch can be a bit repetitive "
