@@ -11,7 +11,7 @@ class TestVectorSpace(unittest.TestCase):
         self.dim = 32
 
     def test_init(self):
-        _ = VectorSpace(10)
+        _ = VectorSpace(dim=10)
 
     def test_append(self):
         subspace = VectorSpace(dim=self.dim)

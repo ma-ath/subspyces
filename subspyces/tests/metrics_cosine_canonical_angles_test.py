@@ -36,8 +36,8 @@ class TestMetricsCanonicalAngles(unittest.TestCase):
         self.res3 = np.array(
             [0, 0, 0, 0]
         )
-        self.subspaceA = VectorSpace(4).append(self.A)
-        self.subspaceB = VectorSpace(4).append(self.B)
+        self.subspaceA = VectorSpace(dim=4).append(self.A)
+        self.subspaceB = VectorSpace(dim=4).append(self.B)
 
     def test_input_checks(self):
         with self.assertRaises(TypeError):
@@ -64,6 +64,16 @@ class TestMetricsCanonicalAngles(unittest.TestCase):
             # self.assertTrue(torch.allclose(ca, self.res2))
             # ca = cosine_canonical_angles(self.C, self.A)
             # self.assertTrue(torch.allclose(ca, self.res2))
+
+    def test_linalgsvd_using_1_basis_vector(self):
+        A = VectorSpace(dim=16).append(torch.rand(16))
+        B = VectorSpace(dim=16).append(torch.rand(16))
+        _ = cosine_canonical_angles(A, B)
+
+    def test_cca_is_ordered(self):
+        cca = cosine_canonical_angles(self.A, self.B)
+        for i in range(1, len(cca)):
+            self.assertTrue(cca[i-1] >= cca[i])
 
 
 if __name__ == "__main__":

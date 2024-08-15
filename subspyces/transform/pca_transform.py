@@ -36,8 +36,13 @@ class PCATransform(AbstractTransform):
         return "PCATransform"
 
     def transform(self, vector_space: VectorSpace, *args, **kwargs) -> VectorSpace:
-        if self.use_sklearn:
-            warnings.warn("sklearn calculates the PCA sligthly different then general subspyces. " +
+        if vector_space.n < 2:
+            warnings.warn("The input VectorSpace only have one basis vector. Calculated 'PCA' is "
+                          "simply this basis vector normalized.", UserWarning)
+            pca_ = vector_space._data / torch.norm(vector_space._data)
+            pca_ = pca_.T
+        elif self.use_sklearn:
+            warnings.warn("sklearn calculates the PCA sligthly different then general subspyces. "
                           "Make sure you know what you are doing", UserWarning)
             pca_ = self._pca_transform.fit(vector_space._data).components_.copy().T
         else:
@@ -49,30 +54,32 @@ class PCATransform(AbstractTransform):
             # We can ignore the torch warning here about casting complex -> real
             if torch.max(torch.imag(eigenvalues)) > self._etol:
                 raise (AssertionError(
-                    "Eigenvalues of autocorrelation matrix are supposed to be real," +
+                    "Eigenvalues of autocorrelation matrix are supposed to be real, "
                     f"but has imaginary part {torch.max(torch.imag(eigenvalues))}"))
 
-            # TODO: This filter is not working...
+            # BUG: This filter is not working...
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
                 eigenvalues = torch.real(eigenvalues)
                 eigenvectors = torch.real(eigenvectors)
 
-            sorted_indices = torch.argsort(eigenvalues, descending=True)
+            squared_eigenvalues = torch.square(eigenvalues)
+            sorted_indices = torch.argsort(squared_eigenvalues, descending=True)
+            squared_eigenvalues.sort(descending=True)
             if self.n_components is not None:
                 pca_ = eigenvectors[:, sorted_indices][:, :self.n_components]
             elif self.min_energy is not None:
-                energy = torch.sum(eigenvalues)
-                cumulative_energy = torch.cumsum(eigenvalues, dim=0) / energy
-                n_components = torch.sum(cumulative_energy <= self.min_energy)
+                cumulative_energy = torch.cumsum(squared_eigenvalues,
+                                                 dim=0) / torch.sum(squared_eigenvalues)
+                n_components = torch.sum(cumulative_energy <= self.min_energy) + 1
                 pca_ = eigenvectors[:, sorted_indices][:, :n_components]
             else:
                 raise RuntimeError("Unexpected error. This should not happen.")
 
             # Check the eigenvectors for NaN. An NaN can show there was a numerical error
             if torch.isnan(pca_).any():
-                warnings.warn("A NaN was generated while calculating the eigenvectors." +
-                              "This may suggest a numerical error on calculation." +
+                warnings.warn("A NaN was generated while calculating the eigenvectors. "
+                              "This may suggest a numerical error on calculation. "
                               "Casting all NaN to 0.", RuntimeWarning)
 
                 pca_ = torch.nan_to_num(pca_)

@@ -21,8 +21,10 @@ def cosine_canonical_angles(x: Union[torch.Tensor, np.ndarray, VectorSpace],
         # We do not check for ortonormality, so make sure you know what you are doing.
         # Normalization is done automatically here, but not ortogonalization.
         cs = cosine_similarity(x, y)
-        if cs.dim() == 1:
+        if cs.dim() <= 1:
             return cs
-        return linalg.svdvals(cs)
+        cca = linalg.svdvals(cs)
+        cca.sort(descending=True)
+        return cca
     else:
         raise (NotImplementedError)

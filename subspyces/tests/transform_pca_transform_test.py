@@ -6,6 +6,7 @@ from torch.utils.data import Subset
 
 from subspyces.transform import PCATransform
 from subspyces.generators import IdentityGenerator
+from subspyces.core import VectorSpace
 
 
 # --- unittests
@@ -21,12 +22,23 @@ class TestPCATransform(unittest.TestCase):
     def test_transform_n_components(self):
         pca_transform = PCATransform(n_components=10)
         for vector_space in self.vector_spaces.values():
-            _ = pca_transform.transform(vector_space)
+            pca = pca_transform.transform(vector_space)
+            self.assertTrue(pca.n > 0)
 
     def test_transform_min_energy(self):
         pca_transform = PCATransform(min_energy=0.95)
         for vector_space in self.vector_spaces.values():
-            _ = pca_transform.transform(vector_space)
+            pca = pca_transform.transform(vector_space)
+            self.assertTrue(pca.n > 0)
+
+    def test_transform_1_base_subspace(self):
+        pca_transform = PCATransform(min_energy=0.95, use_sklearn=False)
+
+        vector_space = VectorSpace(dim=32)
+        vector_space.append(torch.randn(32))
+
+        pca = pca_transform.transform(vector_space)
+        self.assertTrue(pca.n > 0)
 
 
 if __name__ == "__main__":
